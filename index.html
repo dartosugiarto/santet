@@ -3,20 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roadmap: Logika Kesurupan & Mistik</title>
+    <title>Roadmap: Logika Mistika vs Sains</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <nav class="top-nav">
         <div class="brand">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="brand-icon"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
             <span class="brand-text">Bedah Logika: <strong>Mistik vs Sains</strong></span>
         </div>
         <div class="status-badge">Full Roadmap</div>
     </nav>
 
     <main class="roadmap-container">
+        
         <div class="diagram-canvas">
             <div class="tree">
                 <ul>
@@ -26,6 +30,7 @@
                             <span class="title">Fenomena Ganjil</span>
                         </a>
                         <ul>
+                            
                             <li>
                                 <a href="#" class="node-card gray" onclick="openDrawer('mistik_root', event)">
                                     <span class="title">Logika Mistika</span>
@@ -33,17 +38,18 @@
                                 <ul>
                                     <li>
                                         <a href="#" class="node-card gray" onclick="openDrawer('santet', event)">
-                                            <span class="title">Santet/Guna-guna</span>
+                                            <span class="title">Santet & Guna-guna</span>
                                         </a>
                                         <ul>
                                             <li>
                                                 <a href="#" class="node-card purple" onclick="openDrawer('santet_medis', event)">
                                                     <span class="label">FAKTA MEDIS</span>
-                                                    <span class="title">Keracunan/Genetik</span>
+                                                    <span class="title">Keracunan / Genetik</span>
                                                 </a>
                                             </li>
                                         </ul>
                                     </li>
+
                                     <li>
                                         <a href="#" class="node-card gray" onclick="openDrawer('indigo', event)">
                                             <span class="title">Anak Indigo</span>
@@ -57,6 +63,7 @@
                                             </li>
                                         </ul>
                                     </li>
+
                                     <li>
                                         <a href="#" class="node-card gray" onclick="openDrawer('ketindihan', event)">
                                             <span class="title">Ketindihan</span>
@@ -118,13 +125,15 @@
                                         <ul>
                                             <li>
                                                 <a href="#" class="node-card purple" onclick="openDrawer('evolusi', event)">
-                                                    <span class="title">Evolusi & Survival</span>
+                                                    <span class="title">Evolusi Survival</span>
                                                 </a>
                                             </li>
                                         </ul>
                                     </li>
+
                                 </ul>
                             </li>
+
                         </ul>
                     </li>
                 </ul>
@@ -135,25 +144,30 @@
             <button class="close-btn" onclick="closeDrawer()">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
             </button>
+            
             <div class="drawer-header">
                 <span class="topic-badge" id="panelCategory">Topic</span>
                 <h2 id="panelTitle">Judul Materi</h2>
             </div>
+            
             <div class="drawer-content">
-                <p id="panelText" class="main-desc">Isi materi...</p>
+                <p id="panelText" class="main-desc">Penjelasan detail akan muncul di sini.</p>
+                
                 <div class="resources">
                     <h3>Deep Dive</h3>
+                    
                     <div class="res-item">
                         <span class="res-icon">💡</span>
                         <div class="res-info">
-                            <strong>Analogi / Fakta</strong>
+                            <strong>Analogi / Logika</strong>
                             <span id="panelAnalogy">-</span>
                         </div>
                     </div>
+
                     <div class="res-item">
                         <span class="res-icon">🧠</span>
                         <div class="res-info">
-                            <strong>Mekanisme / Studi Kasus</strong>
+                            <strong>Fakta / Studi Kasus</strong>
                             <span id="panelCase">-</span>
                         </div>
                     </div>
@@ -162,6 +176,7 @@
         </aside>
 
         <div class="overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
+
     </main>
 
     <script src="script.js"></script>
