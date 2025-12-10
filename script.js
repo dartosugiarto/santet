@@ -41,7 +41,7 @@ const contentData = {
         caseStudy: "Tercatat resmi di ICD-10 (WHO)."
     },
     "kimia": {
-        svg: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2"><path d="M18 6L6 18"></path><path d="M6 6l12 12"></path></svg>`, /* Placeholder icon, bisa diganti */
+        svg: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2"><path d="M18 6L6 18"></path><path d="M6 6l12 12"></path></svg>`,
         category: "NEUROKIMIA",
         title: "Banjir Kimia Otak",
         text: "Otak memproduksi Endorfin & Dopamin berlebih. Menyebabkan rasa kuat, kebal sakit, dan euforia.",
@@ -66,35 +66,26 @@ const contentData = {
     }
 };
 
-const drawer = document.getElementById('sideDrawer');
-
 function selectNode(key, event) {
     if(event) event.preventDefault();
     
     const data = contentData[key];
     if(!data) return;
 
-    // 1. Update Konten Drawer
-    document.getElementById('panelIcon').innerHTML = data.svg; // Insert SVG
+    // 1. SWITCH VISIBILITY
+    // Sembunyikan 'Empty State', Tampilkan 'Content State'
+    document.getElementById('emptyState').style.display = 'none';
+    document.getElementById('contentState').style.display = 'flex';
+
+    // 2. Update Konten
+    document.getElementById('panelIcon').innerHTML = data.svg;
     document.getElementById('panelCategory').textContent = data.category;
     document.getElementById('panelTitle').textContent = data.title;
     document.getElementById('panelText').innerHTML = data.text;
     document.getElementById('panelAnalogy').textContent = data.analogy;
     document.getElementById('panelCase').textContent = data.caseStudy;
 
-    // 2. Active State
+    // 3. Active State (Visual)
     document.querySelectorAll('.node-card').forEach(el => el.classList.remove('active'));
     if(event.currentTarget) event.currentTarget.classList.add('active');
-
-    // 3. Buka Drawer (Hanya saat diklik)
-    drawer.classList.add('open');
 }
-
-function closeDrawer() {
-    drawer.classList.remove('open');
-    // Opsional: Hapus state active saat ditutup
-    document.querySelectorAll('.node-card').forEach(el => el.classList.remove('active'));
-}
-
-// Tidak ada pemanggilan selectNode() otomatis di sini.
-// Panel akan tetap tertutup sampai user melakukan klik.
