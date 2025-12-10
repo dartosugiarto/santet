@@ -3,491 +3,310 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>System Analysis: Logic Structure</title>
+    <title>Logic Extraction: Canvas Mode</title>
     <style>
         :root {
-            --bg-body: #FBFBFD;
-            --bg-card: #FFFFFF;
+            --bg-canvas: #F5F5F7; /* Warna dasar kanvas */
+            --bg-ui: #FFFFFF;
             --text-primary: #1D1D1F;
-            --text-secondary: #86868B;
             --accent-color: #0071E3;
             --border-color: #E5E5EA;
-            --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.03);
-            --shadow-hover: 0 12px 24px rgba(0, 0, 0, 0.06);
-            --radius-lg: 20px;
-            --font-stack: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --shadow-float: 0 8px 32px rgba(0, 0, 0, 0.08);
+            --font-stack: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
         }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
+            margin: 0;
+            padding: 0;
             font-family: var(--font-stack);
-            background-color: var(--bg-body);
+            background-color: var(--bg-canvas);
             color: var(--text-primary);
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden; /* Mencegah scroll horizontal halaman */
         }
 
-        /* --- HERO SECTION (Diagram Area) --- */
-        .stage-area {
+        /* --- 1. INFINITE CANVAS AREA --- */
+        /* Ini adalah area diagram yang "Bebas" */
+        #canvas-container {
             position: relative;
-            width: 100vw;
-            height: 75vh; /* Menguasai 75% tinggi layar */
-            background-image: radial-gradient(#D2D2D7 1.5px, transparent 1.5px);
-            background-size: 24px 24px;
-            background-color: #FAFAFC;
+            width: 100vw;   /* Lebar penuh layar */
+            height: 80vh;   /* Tinggi 80% dari layar */
+            background-image: 
+                radial-gradient(#C7C7CC 1px, transparent 1px);
+            background-size: 24px 24px; /* Pola titik-titik halus */
+            background-color: var(--bg-canvas);
+            overflow: auto; /* Scroll jika diagram terlalu besar */
+            cursor: grab;
             border-bottom: 1px solid var(--border-color);
-            overflow: hidden; /* SVG pan/zoom could be added here */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
         }
 
-        .header-overlay {
-            position: absolute;
-            top: 24px;
-            left: 50%;
-            transform: translateX(-50%);
-            text-align: center;
-            z-index: 10;
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            padding: 12px 32px;
-            border-radius: 50px;
-            border: 1px solid rgba(0,0,0,0.05);
-            box-shadow: var(--shadow-sm);
+        #canvas-container:active {
+            cursor: grabbing;
         }
 
-        h1 { font-size: 20px; font-weight: 600; color: var(--text-primary); margin: 0; }
-        p.subtitle { font-size: 13px; color: var(--text-secondary); margin-top: 2px; }
-
-        /* SVG Styles */
-        #roadmapBox {
-            width: 100%;
-            height: 100%;
-            overflow: auto; /* Allow scroll if diagram is huge */
-            display: flex;
-            justify-content: center;
-        }
-
-        svg { 
-            display: block; 
+        /* SVG Diagram */
+        svg {
+            display: block;
+            /* Pastikan SVG cukup besar agar node tidak terpotong */
             min-width: 100%; 
             min-height: 100%;
         }
 
-        /* Node Styling - Lebih Modern */
-        .node-rect { 
-            fill: #FFFFFF; 
-            stroke: #E5E5EA; 
-            stroke-width: 2px; 
-            rx: 12; 
-            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1); 
-            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.02)); 
-        }
-        .node-rect:hover { 
-            stroke: var(--accent-color); 
-            transform: translateY(-2px); 
-            filter: drop-shadow(0 8px 15px rgba(0,113,227,0.15)); 
-        }
-        
-        .node-text { 
-            font-family: var(--font-stack); 
-            font-size: 13px; 
-            fill: var(--text-primary); 
-            font-weight: 500; 
-            pointer-events: none; 
+        /* Header Melayang (Floating UI) */
+        .floating-header {
+            position: absolute;
+            top: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            padding: 12px 30px;
+            border-radius: 50px;
+            box-shadow: var(--shadow-float);
+            border: 1px solid rgba(0,0,0,0.05);
+            text-align: center;
+            z-index: 100;
+            pointer-events: none; /* Agar klik tembus ke bawah jika perlu */
         }
 
-        .edge-path { 
-            stroke: #C7C7CC; 
-            stroke-width: 2px; 
-            fill: none; 
+        .floating-header h1 { font-size: 18px; margin: 0; }
+        .floating-header p { font-size: 12px; margin: 4px 0 0 0; color: #86868B; }
+
+        /* --- 2. NODE STYLES (Modern & Clean) --- */
+        .node-rect {
+            fill: #FFFFFF;
+            stroke: #D2D2D7;
+            stroke-width: 2px;
+            rx: 12; /* Rounded corners */
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.05));
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        /* Hover Effect pada Node */
+        .node-group:hover .node-rect {
+            stroke: var(--accent-color);
+            transform: translateY(-2px);
+            filter: drop-shadow(0 8px 16px rgba(0,113,227,0.2));
+        }
+
+        .node-text {
+            font-size: 13px;
+            font-weight: 500;
+            fill: var(--text-primary);
+            pointer-events: none;
+            font-family: var(--font-stack);
+        }
+
+        .edge-path {
+            fill: none;
+            stroke: #B0B0B5;
+            stroke-width: 2px;
             stroke-linecap: round;
         }
-        
-        .edge-label { 
-            font-size: 11px; 
-            fill: var(--accent-color); 
-            font-weight: 700; 
-            background: var(--bg-body); 
-            padding: 2px 4px;
-        }
-        
-        /* Node Type Colors */
-        .type-start { stroke: #1D1D1F; }
-        .type-decision { stroke-dasharray: 6; }
-        .type-end { stroke: #34C759; }
 
-        /* --- DASHBOARD CONTENT (Bawah) --- */
-        .dashboard-grid {
-            max-width: 1200px;
-            margin: -40px auto 60px; /* Overlap sedikit ke atas */
-            padding: 0 24px;
+        .edge-label-bg { fill: var(--bg-canvas); }
+        .edge-label {
+            font-size: 10px;
+            font-weight: 700;
+            fill: var(--accent-color);
+            text-transform: uppercase;
+        }
+
+        /* --- 3. PANEL BAWAH (Terpisah) --- */
+        .details-panel {
+            padding: 40px 20px;
+            max-width: 1000px;
+            margin: 0 auto;
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 24px;
-            position: relative;
-            z-index: 20;
         }
 
-        .card {
-            background: var(--bg-card);
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-sm);
-            padding: 32px;
+        .info-card {
+            background: white;
+            padding: 24px;
+            border-radius: 16px;
             border: 1px solid var(--border-color);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .card:hover { box-shadow: var(--shadow-hover); }
-
-        .card.full-width { grid-column: span 2; }
-
-        h2 {
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: var(--text-secondary);
-            font-weight: 700;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
         }
         
-        h2::before {
-            content: '';
-            display: block;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--accent-color);
-        }
+        .full-width { grid-column: span 2; }
 
-        /* JSON Box */
-        .json-box {
-            background: #F5F5F7;
-            padding: 20px;
-            border-radius: 12px;
-            font-family: "SF Mono", "Menlo", monospace;
-            font-size: 12px;
-            color: #444;
-            overflow-x: auto;
-            border: 1px solid rgba(0,0,0,0.04);
-            max-height: 250px;
-        }
+        h2 { font-size: 14px; text-transform: uppercase; letter-spacing: 0.05em; color: #86868B; margin-top: 0; }
+        pre { background: #F5F5F7; padding: 15px; border-radius: 8px; overflow-x: auto; font-size: 11px; }
 
-        /* Text Styling */
-        .explanation {
-            font-size: 15px;
-            line-height: 1.7;
-            color: #333;
-        }
-
-        /* Canvas Tools */
-        .canvas-wrapper {
-            position: relative;
-            height: 250px;
-            border: 1px dashed #D2D2D7;
-            border-radius: 12px;
-            background: #FAFAFC;
-            cursor: crosshair;
-            overflow: hidden;
-        }
-        
-        .toolbar {
-            margin-top: 16px;
-            display: flex;
-            justify-content: flex-end;
-            gap: 12px;
-        }
-        
-        button {
-            background: #fff;
-            border: 1px solid var(--border-color);
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-size: 12px;
-            color: var(--text-primary);
-            cursor: pointer;
-            font-weight: 500;
-            transition: all 0.2s;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-        }
-        button:hover { background: #F5F5F7; border-color: #86868B; }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .dashboard-grid { grid-template-columns: 1fr; margin-top: 20px; }
-            .card.full-width { grid-column: span 1; }
-            .stage-area { height: 60vh; }
-        }
     </style>
 </head>
 <body>
 
-    <section class="stage-area">
-        <div class="header-overlay">
-            <h1>Logic Extraction</h1>
-            <p class="subtitle">Mysticism vs Science: Structural Analysis</p>
-        </div>
+    <div id="canvas-container">
         
-        <div id="roadmapBox">
-            <svg id="logicSvg"></svg>
+        <div class="floating-header">
+            <h1>Logic Structure</h1>
+            <p>Buta Karena Santet? (Analisis Sistem)</p>
         </div>
-    </section>
 
-    <div class="dashboard-grid">
-        
-        <div class="card">
-            <h2>System Synthesis</h2>
-            <p class="explanation">
-                <strong>Analisis Inti:</strong> Atribusi fenomena fisik kepada "logika mistika" (santet) hanya valid jika <code>Scientific_Tools == FALSE</code>. <br><br>
-                Saat instrumen verifikasi diterapkan (<code>TRUE</code>), entitas penyakit (Hemofilia, Kusta, Pes) teridentifikasi sebagai gangguan biologis. Pengujian terkontrol (Stargate Project) menegaskan bahwa fenomena supranatural yang tidak dapat direplikasi hanyalah kebetulan statistik.
+        <svg id="logicSvg"></svg>
+    </div>
+
+    <div class="details-panel">
+        <div class="info-card">
+            <h2>Data Structure (JSON)</h2>
+            <pre id="jsonDisplay"></pre>
+        </div>
+        <div class="info-card">
+            <h2>Synthesis</h2>
+            <p style="font-size: 14px; line-height: 1.6; color: #333;">
+                Diagram di atas memisahkan jalur logika antara <strong>Atribusi Mistis</strong> (ketika alat ilmiah tidak ada) dan <strong>Pembuktian Empiris</strong>. Ini menunjukkan bahwa "santet" seringkali adalah <em>placeholder</em> untuk diagnosa medis yang belum teridentifikasi (seperti Kusta atau Hemofilia).
             </p>
-        </div>
-
-        <div class="card">
-            <h2>Extracted Data (JSON)</h2>
-            <div class="json-box">
-                <pre id="jsonDisplay"></pre>
-            </div>
-        </div>
-
-        <div class="card full-width">
-            <h2>Analyst Notes</h2>
-            <div class="canvas-wrapper" id="canvasWrap">
-                <canvas id="noteCanvas"></canvas>
-            </div>
-            <div class="toolbar">
-                <button onclick="clearCanvas()">Clear Board</button>
-                <button onclick="saveCanvas()">Save Note as PNG</button>
-            </div>
         </div>
     </div>
 
 <script>
-    // --- 1. DATA LOGIC ---
+    // DATA LOGIC
     const logicData = {
         "nodes": [
-            {"id": "N0", "label": "START: Phenomenon Observed", "type": "start", "level": 0},
-            {"id": "N1", "label": "DECISION: Scientific Tools?", "type": "decision", "level": 1},
+            {"id": "N0", "label": "START: Phenomenon", "level": 0},
+            {"id": "N1", "label": "? Scientific Tools Available", "level": 1, "type": "decision"},
             
-            // Branch False
-            {"id": "N2", "label": "PROCESS: Mystical Attribution", "type": "process", "level": 2},
-            {"id": "N3", "label": "OUTPUT: Santet / Black Magic", "type": "end", "level": 3},
+            // Kiri
+            {"id": "N2", "label": "Mystical Attribution", "level": 2},
+            {"id": "N3", "label": "OUTPUT: Santet Idea", "level": 3, "type": "end"},
 
-            // Branch True
-            {"id": "N4", "label": "PROCESS: Empirical Investigation", "type": "process", "level": 2},
+            // Kanan
+            {"id": "N4", "label": "Empirical Investigation", "level": 2},
             
-            {"id": "N5", "label": "CASE: Unstoppable Bleeding", "type": "process", "level": 3},
-            {"id": "N6", "label": "ID: Hemophilia (Genetic)", "type": "end", "level": 4},
+            {"id": "N5", "label": "Bleeding Case", "level": 3},
+            {"id": "N6", "label": "Hemophilia", "level": 4, "type": "end"},
             
-            {"id": "N7", "label": "CASE: Skin Decay", "type": "process", "level": 3},
-            {"id": "N8", "label": "ID: Leprosy (M. leprae)", "type": "end", "level": 4},
+            {"id": "N7", "label": "Skin Decay Case", "level": 3},
+            {"id": "N8", "label": "Leprosy (M. leprae)", "level": 4, "type": "end"},
             
-            {"id": "N9", "label": "CASE: Mass Death", "type": "process", "level": 3},
-            {"id": "N10", "label": "ID: Plague (Y. pestis)", "type": "end", "level": 4},
-            
-            {"id": "N11", "label": "CASE: Supernatural Claims", "type": "process", "level": 3},
-            {"id": "N12", "label": "TEST: CIA Project Stargate", "type": "process", "level": 4},
-            {"id": "N13", "label": "DECISION: Replicable?", "type": "decision", "level": 5},
-            {"id": "N14", "label": "OUTPUT: Coincidence", "type": "end", "level": 6}
+            {"id": "N9", "label": "Supernatural Test", "level": 3},
+            {"id": "N10", "label": "CIA Stargate Project", "level": 4},
+            {"id": "N11", "label": "Coincidence (Stat)", "level": 5, "type": "end"}
         ],
         "edges": [
             {"from": "N0", "to": "N1"},
-            {"from": "N1", "to": "N2", "condition": "FALSE"},
+            {"from": "N1", "to": "N2", "label": "NO"},
             {"from": "N2", "to": "N3"},
-            {"from": "N1", "to": "N4", "condition": "TRUE"},
+            {"from": "N1", "to": "N4", "label": "YES"},
             {"from": "N4", "to": "N5"}, {"from": "N5", "to": "N6"},
             {"from": "N4", "to": "N7"}, {"from": "N7", "to": "N8"},
             {"from": "N4", "to": "N9"}, {"from": "N9", "to": "N10"},
-            {"from": "N4", "to": "N11"}, {"from": "N11", "to": "N12"},
-            {"from": "N12", "to": "N13"}, {"from": "N13", "to": "N14", "condition": "NO"}
+            {"from": "N10", "to": "N11"}
         ]
     };
 
     document.getElementById('jsonDisplay').textContent = JSON.stringify(logicData, null, 2);
 
-    // --- 2. RENDERER ENGINE (Updated for Full Width) ---
-    function renderRoadmap() {
+    // RENDERER LOGIC
+    function render() {
+        const container = document.getElementById('canvas-container');
         const svg = document.getElementById('logicSvg');
-        const box = document.getElementById('roadmapBox');
         
-        // Use container width, but minimum 1000px to prevent squeezing
-        const width = Math.max(box.offsetWidth, 1200); 
-        const height = box.offsetHeight || 600;
+        // Ukuran Kanvas Dinamis
+        // Kita set width min 1200 agar diagram tidak gepeng, user bisa scroll
+        const width = Math.max(container.offsetWidth, 1200); 
+        const height = 600;
         
-        // Reset content
-        svg.innerHTML = ''; 
-        svg.style.width = width + 'px'; // Enforce min width inside scroll
+        svg.style.width = width + "px";
+        svg.style.height = height + "px";
+        svg.innerHTML = ''; // Reset
 
-        const levelHeight = 90;
-        const nodeWidth = 180;
-        const nodeHeight = 46;
-        const startY = 80; // Add padding top
-        
+        const levelY = 100;
+        const startY = 80;
+        const nodeW = 160;
+        const nodeH = 44;
+
+        // Group by Level
         const levels = {};
-        logicData.nodes.forEach(node => {
-            if (!levels[node.level]) levels[node.level] = [];
-            levels[node.level].push(node);
+        logicData.nodes.forEach(n => {
+            if(!levels[n.level]) levels[n.level] = [];
+            levels[n.level].push(n);
         });
 
-        const nodePositions = {};
-        Object.keys(levels).forEach(level => {
-            const nodesInLevel = levels[level];
-            const segmentWidth = width / (nodesInLevel.length + 1);
-            
-            nodesInLevel.forEach((node, index) => {
-                const x = segmentWidth * (index + 1) - (nodeWidth / 2);
-                const y = startY + (node.level * levelHeight);
-                nodePositions[node.id] = { x, y };
-                
-                // Draw Node Group
-                const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
-                
-                // Rect
-                const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-                rect.setAttribute("x", x);
-                rect.setAttribute("y", y);
-                rect.setAttribute("width", nodeWidth);
-                rect.setAttribute("height", nodeHeight);
-                rect.setAttribute("class", `node-rect type-${node.type}`);
-                
-                // Text
-                const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-                text.setAttribute("x", x + nodeWidth/2);
-                text.setAttribute("y", y + nodeHeight/2 + 5);
-                text.setAttribute("text-anchor", "middle");
-                text.setAttribute("class", "node-text");
-                text.textContent = node.label.length > 25 ? node.label.substring(0, 23) + "..." : node.label;
-                
-                g.appendChild(rect);
-                g.appendChild(text);
-                svg.appendChild(g);
+        const pos = {};
+
+        // Calculate Position
+        Object.keys(levels).forEach(lvl => {
+            const nodes = levels[lvl];
+            const segment = width / (nodes.length + 1);
+            nodes.forEach((node, i) => {
+                pos[node.id] = {
+                    x: segment * (i + 1) - (nodeW/2),
+                    y: startY + (node.level * levelY)
+                };
             });
         });
 
-        // Draw Edges (Curved Lines)
-        logicData.edges.forEach(edge => {
-            const start = nodePositions[edge.from];
-            const end = nodePositions[edge.to];
-            
-            if (start && end) {
-                const startX = start.x + nodeWidth/2;
-                const startY = start.y + nodeHeight;
-                const endX = end.x + nodeWidth/2;
-                const endY = end.y;
+        // Draw Edges First (Behind nodes)
+        logicData.edges.forEach(e => {
+            const s = pos[e.from];
+            const t = pos[e.to];
+            if(s && t) {
+                const sx = s.x + nodeW/2;
+                const sy = s.y + nodeH;
+                const tx = t.x + nodeW/2;
+                const ty = t.y;
 
-                // Smooth Bezier
+                // Bezier
                 const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-                const controlY = (endY - startY) / 2;
-                const d = `M ${startX} ${startY} C ${startX} ${startY + controlY}, ${endX} ${endY - controlY}, ${endX} ${endY}`;
-                
-                path.setAttribute("d", d);
+                const cY = (ty - sy) / 2;
+                path.setAttribute("d", `M ${sx} ${sy} C ${sx} ${sy+cY}, ${tx} ${ty-cY}, ${tx} ${ty}`);
                 path.setAttribute("class", "edge-path");
-                svg.prepend(path); 
+                if(e.label === "NO") path.setAttribute("stroke-dasharray", "4"); // Putus-putus untuk NO
+                svg.appendChild(path);
 
-                // Condition Labels
-                if (edge.condition) {
-                    const midX = (startX + endX) / 2;
-                    const midY = (startY + endY) / 2;
+                if(e.label) {
+                    const mx = (sx+tx)/2;
+                    const my = (sy+ty)/2;
                     
-                    // Small background for text readability on lines
-                    const textBg = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-                    textBg.setAttribute("x", midX - 20);
-                    textBg.setAttribute("y", midY - 10);
-                    textBg.setAttribute("width", 40);
-                    textBg.setAttribute("height", 20);
-                    textBg.setAttribute("fill", "#FAFAFC");
-                    textBg.setAttribute("rx", 4);
-                    
-                    const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-                    text.setAttribute("x", midX);
-                    text.setAttribute("y", midY + 4);
-                    text.setAttribute("text-anchor", "middle");
-                    text.setAttribute("class", "edge-label");
-                    text.textContent = edge.condition;
-                    
-                    svg.appendChild(textBg);
-                    svg.appendChild(text);
+                    // Background Text Label (agar kabel tidak menabrak teks)
+                    const bg = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+                    bg.setAttribute("x", mx - 15); bg.setAttribute("y", my - 8);
+                    bg.setAttribute("width", 30); bg.setAttribute("height", 16);
+                    bg.setAttribute("class", "edge-label-bg");
+                    svg.appendChild(bg);
+
+                    const txt = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                    txt.setAttribute("x", mx); txt.setAttribute("y", my + 4);
+                    txt.setAttribute("text-anchor", "middle");
+                    txt.setAttribute("class", "edge-label");
+                    txt.textContent = e.label;
+                    svg.appendChild(txt);
                 }
             }
         });
+
+        // Draw Nodes
+        logicData.nodes.forEach(n => {
+            const p = pos[n.id];
+            const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+            g.setAttribute("class", "node-group");
+            
+            const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+            rect.setAttribute("x", p.x); rect.setAttribute("y", p.y);
+            rect.setAttribute("width", nodeW); rect.setAttribute("height", nodeH);
+            rect.setAttribute("class", "node-rect");
+            // Warna border khusus untuk Start/End
+            if(n.type === 'end') rect.style.stroke = "#34C759";
+            if(n.type === 'decision') rect.style.strokeDasharray = "4";
+
+            const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+            text.setAttribute("x", p.x + nodeW/2);
+            text.setAttribute("y", p.y + nodeH/2 + 5);
+            text.setAttribute("text-anchor", "middle");
+            text.setAttribute("class", "node-text");
+            text.textContent = n.label;
+
+            g.appendChild(rect);
+            g.appendChild(text);
+            svg.appendChild(g);
+        });
     }
 
-    // --- 3. CANVAS LOGIC ---
-    const canvas = document.getElementById('noteCanvas');
-    const ctx = canvas.getContext('2d');
-    const canvasWrap = document.getElementById('canvasWrap');
-    let isDrawing = false;
-    let lastX = 0, lastY = 0;
+    render();
+    window.addEventListener('resize', render);
 
-    function resizeCanvas() {
-        canvas.width = canvasWrap.offsetWidth;
-        canvas.height = canvasWrap.offsetHeight;
-        ctx.strokeStyle = '#0071E3'; // Blue pen
-        ctx.lineJoin = 'round';
-        ctx.lineCap = 'round';
-        ctx.lineWidth = 3;
-    }
-
-    window.addEventListener('resize', () => {
-        renderRoadmap();
-        resizeCanvas();
-    });
-
-    setTimeout(() => {
-        renderRoadmap();
-        resizeCanvas();
-    }, 100);
-
-    function draw(e) {
-        if (!isDrawing) return;
-        const rect = canvas.getBoundingClientRect();
-        const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
-        const clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
-        const x = clientX - rect.left;
-        const y = clientY - rect.top;
-
-        ctx.beginPath();
-        ctx.moveTo(lastX, lastY);
-        ctx.lineTo(x, y);
-        ctx.stroke();
-        [lastX, lastY] = [x, y];
-    }
-
-    canvas.addEventListener('mousedown', (e) => {
-        isDrawing = true;
-        const rect = canvas.getBoundingClientRect();
-        [lastX, lastY] = [e.clientX - rect.left, e.clientY - rect.top];
-    });
-    canvas.addEventListener('mousemove', draw);
-    canvas.addEventListener('mouseup', () => isDrawing = false);
-    canvas.addEventListener('mouseout', () => isDrawing = false);
-    
-    // Touch support
-    canvas.addEventListener('touchstart', (e) => {
-        e.preventDefault();
-        isDrawing = true;
-        const rect = canvas.getBoundingClientRect();
-        [lastX, lastY] = [e.touches[0].clientX - rect.left, e.touches[0].clientY - rect.top];
-    }, {passive: false});
-    canvas.addEventListener('touchmove', (e) => { e.preventDefault(); draw(e); }, {passive: false});
-    canvas.addEventListener('touchend', () => isDrawing = false);
-
-    function clearCanvas() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-    }
-    
-    function saveCanvas() {
-        const link = document.createElement('a');
-        link.download = 'analyst_notes.png';
-        link.href = canvas.toDataURL();
-        link.click();
-    }
 </script>
-
 </body>
 </html>
