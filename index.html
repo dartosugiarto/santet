@@ -3,328 +3,419 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Analisis Sistem: Logika Mistika vs Penjelasan Natural</title>
+    <title>System Analysis: Logic Structure</title>
     <style>
         :root {
-            --bg-color: #fbfbfd;
-            --text-primary: #1d1d1f;
-            --text-secondary: #86868b;
-            --accent: #0071e3;
-            --border: #d2d2d7;
-            --card-bg: #ffffff;
-            --radius: 12px;
-            --font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --bg-body: #F5F5F7;
+            --bg-card: #FFFFFF;
+            --text-primary: #1D1D1F;
+            --text-secondary: #86868B;
+            --accent-color: #0071E3;
+            --border-color: #D2D2D7;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.08);
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --font-stack: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: var(--font-stack);
-            background-color: var(--bg-color);
+            background-color: var(--bg-body);
             color: var(--text-primary);
-            line-height: 1.5;
-            -webkit-font-smoothing: antialiased;
-            padding: 40px 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
+            min-height: 100vh;
+            padding: 40px 20px;
+            -webkit-font-smoothing: antialiased;
         }
 
         .container {
-            max-width: 800px;
+            max-width: 1000px;
             width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
         }
 
-        header {
-            margin-bottom: 40px;
-            text-align: left;
+        /* Header */
+        header { text-align: left; padding: 0 8px; }
+        h1 { font-size: 28px; font-weight: 600; letter-spacing: -0.01em; margin-bottom: 8px; }
+        p.subtitle { font-size: 15px; color: var(--text-secondary); font-weight: 400; }
+
+        /* Card Style */
+        .card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            padding: 32px;
+            border: 1px solid rgba(0,0,0,0.02);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        h1 {
-            font-size: 24px;
-            font-weight: 600;
-            margin-bottom: 8px;
-            letter-spacing: -0.015em;
-        }
+        .card:hover { box-shadow: var(--shadow-md); }
 
-        p.subtitle {
-            font-size: 14px;
+        h2 {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
             color: var(--text-secondary);
-        }
-
-        section {
-            background: var(--card-bg);
-            border-radius: var(--radius);
-            padding: 24px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
-            border: 1px solid rgba(0,0,0,0.05);
+            font-weight: 600;
             margin-bottom: 24px;
         }
 
-        h2 {
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--text-secondary);
-            margin-bottom: 16px;
-            font-weight: 600;
+        /* Roadmap SVG Container */
+        .roadmap-container {
+            width: 100%;
+            height: 600px;
+            overflow: auto;
+            position: relative;
+            background-image: radial-gradient(#E5E5EA 1px, transparent 1px);
+            background-size: 20px 20px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
         }
 
-        /* Diagram Logic Style */
-        .diagram-container {
-            overflow-x: auto;
-            font-family: "SF Mono", "Monaco", "Inconsolata", "Fira Mono", "Droid Sans Mono", "Source Code Pro", monospace;
-            font-size: 12px;
-            line-height: 1.4;
-            color: #333;
-            background-color: #f5f5f7;
+        svg { display: block; width: 100%; height: 100%; min-width: 800px; min-height: 600px; }
+        
+        /* Node Styles in SVG */
+        .node-rect { fill: #fff; stroke: #D2D2D7; stroke-width: 1.5px; rx: 8; transition: all 0.3s; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.05)); }
+        .node-rect:hover { stroke: var(--accent-color); stroke-width: 2px; }
+        .node-text { font-family: var(--font-stack); font-size: 12px; fill: var(--text-primary); font-weight: 500; pointer-events: none; }
+        .edge-path { stroke: #C7C7CC; stroke-width: 1.5px; fill: none; transition: stroke 0.3s; }
+        .edge-label { font-size: 10px; fill: var(--accent-color); background: #fff; font-weight: 600; }
+
+        /* JSON Display */
+        .json-box {
+            background: #F5F5F7;
             padding: 20px;
-            border-radius: 8px;
-            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            font-family: "SF Mono", "Menlo", monospace;
+            font-size: 12px;
+            color: #333;
+            overflow-x: auto;
+            border: 1px solid var(--border-color);
+            max-height: 300px;
         }
 
-        pre {
-            margin: 0;
-        }
-
-        /* Explanation Text */
-        .explanation-text {
+        /* Explanation */
+        .explanation {
             font-size: 16px;
+            line-height: 1.6;
             color: var(--text-primary);
-            font-weight: 400;
-            text-align: justify;
+            max-width: 800px;
         }
 
-        /* Canvas Area */
+        /* Canvas */
         .canvas-wrapper {
             position: relative;
-            width: 100%;
             height: 300px;
-            background: #fff;
-            border: 1px solid var(--border);
-            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            background: #FFF;
             cursor: crosshair;
             overflow: hidden;
         }
-
-        canvas {
-            display: block;
-        }
-
-        .canvas-controls {
-            margin-top: 10px;
+        canvas { display: block; width: 100%; height: 100%; }
+        
+        .toolbar {
+            margin-top: 12px;
             display: flex;
             justify-content: flex-end;
-            gap: 10px;
-        }
-
-        button {
-            background: none;
-            border: 1px solid var(--border);
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-size: 12px;
-            cursor: pointer;
-            color: var(--text-primary);
-            transition: all 0.2s;
-        }
-
-        button:hover {
-            background: #f5f5f7;
-            border-color: #999;
-        }
-
-        button.clear-btn {
-            color: #ff3b30;
-            border-color: rgba(255, 59, 48, 0.3);
+            gap: 12px;
         }
         
-        button.clear-btn:hover {
-            background: rgba(255, 59, 48, 0.05);
-            border-color: #ff3b30;
-        }
-
-        footer {
-            margin-top: 40px;
-            border-top: 1px solid var(--border);
-            padding-top: 20px;
+        button {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            padding: 8px 16px;
+            border-radius: 8px;
             font-size: 12px;
-            color: var(--text-secondary);
-            text-align: center;
+            color: var(--text-primary);
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
         }
+        
+        button:hover { background: #F5F5F7; border-color: #86868B; }
+        button.active { background: var(--text-primary); color: #fff; border-color: var(--text-primary); }
 
-        /* Responsive */
-        @media (max-width: 600px) {
-            body { padding: 20px; }
-            h1 { font-size: 20px; }
-        }
+        /* Badge Types */
+        .type-start { stroke: var(--text-primary); stroke-width: 2px; }
+        .type-decision { stroke: var(--accent-color); stroke-dasharray: 4; }
+        .type-process { stroke: #D2D2D7; }
+        .type-end { stroke: #34C759; stroke-width: 2px; }
+
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <header>
-            <h1>Analisis Logika: Fenomena vs Pengetahuan</h1>
-            <p class="subtitle">Berdasarkan data input video: Buta Karena "Santet"? Ada Penjelasan Ilmiahnya! (Malaka Project)</p>
-        </header>
+<div class="container">
+    <header>
+        <h1>Logic Extraction: Mysticism vs Science</h1>
+        <p class="subtitle">Structural Analysis based on Video Content "Buta Karena Santet?"</p>
+    </header>
 
-        <section>
-            <h2>Diagram Logika Struktural</h2>
-            <div class="diagram-container">
-<pre>
-START [Input: Fenomena Tidak Terjelaskan]
-  │
-  ▼
-[Proses: Evaluasi Ketersediaan Data/Teknologi]
-  │
-  ├── KONDISI 1: Teknologi/Sains BELUM MEMADAI (Masa Lalu/Minim Literasi)
-  │    │
-  │    ▼
-  │  [Keputusan: Atribusi ke "Logika Mistika"]
-  │    │
-  │    ├── Kasus: Pendarahan Tak Henti ──> Output: "Santet/Kutukan"
-  │    ├── Kasus: Luka Kulit/Isolasi ──> Output: "Guna-guna"
-  │    └── Kasus: Wabah Massal ──> Output: "Tulah/Karma"
-  │    │
-  │    ▼
-  │  [Status: Bias Kognitif / Selesai Tanpa Solusi]
-  │
-  └── KONDISI 2: Teknologi/Sains MEMADAI (Modern/Berpikir Kritis)
-       │
-       ▼
-     [Proses: Investigasi Empiris & Identifikasi Pola]
-       │
-       ├── Uji Medis: Pendarahan ──> [Identifikasi: Hemofilia / Genetika]
-       ├── Uji Mikrobiologi: Luka ──> [Identifikasi: Mycobacterium leprae / Kusta]
-       ├── Uji Epidemiologi: Wabah ──> [Identifikasi: Yersinia pestis / Black Death]
-       └── Uji Terkontrol (Stargate CIA): Klaim Supranatural ──> [Hasil: Gagal Replikasi / Kebetulan]
-       │
-       ▼
-     [Keputusan: Penjelasan Natural Valid]
-       │
-       ▼
-END [Output: Referensi Diperkaya & Pola Pikir Sehat]
-</pre>
-            </div>
-        </section>
-
-        <section>
-            <h2>Sintesis Analitik</h2>
-            <p class="explanation-text">
-                Fenomena yang secara historis diklasifikasikan sebagai kejadian supranatural (santet, kutukan) merupakan konsekuensi dari ketiadaan instrumen deteksi mikroba dan genetika pada masa lampau. Penyakit seperti hemofilia, kusta, dan wabah pes (Black Death) kini telah teridentifikasi memiliki etiologi biologis yang jelas, yakni mutasi genetik dan infeksi patogen (bakteri/virus), bukan intervensi metafisik. Pengujian empiris terhadap klaim kemampuan paranormal, seperti Project Stargate oleh CIA, secara konsisten gagal menghasilkan data yang dapat direplikasi atau digunakan secara strategis. Oleh karena itu, pendekatan rasional menuntut substitusi "logika mistika" dengan investigasi berbasis bukti untuk memahami anomali peristiwa.
-            </p>
-        </section>
-
-        <section>
-            <h2>Canvas Catatan (Raw Input)</h2>
-            <div class="canvas-wrapper" id="canvasContainer">
-                <canvas id="drawingCanvas"></canvas>
-            </div>
-            <div class="canvas-controls">
-                <button onclick="downloadCanvas()">Simpan Gambar</button>
-                <button class="clear-btn" onclick="clearCanvas()">Hapus</button>
-            </div>
-        </section>
-
-        <footer>
-            <p>Generated by Gemini AI System • Objective Analysis Mode</p>
-        </footer>
+    <div class="card">
+        <h2>Logic Flow Visualizer</h2>
+        <div class="roadmap-container" id="roadmapBox">
+            <svg id="logicSvg"></svg>
+        </div>
     </div>
 
-    <script>
-        // Canvas Logic
-        const canvas = document.getElementById('drawingCanvas');
-        const ctx = canvas.getContext('2d');
-        const container = document.getElementById('canvasContainer');
+    <div class="card">
+        <h2>Extracted Data Structure (JSON)</h2>
+        <div class="json-box">
+            <pre id="jsonDisplay"></pre>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>System Synthesis</h2>
+        <p class="explanation">
+            Analisis sistem menunjukkan bahwa atribusi fenomena fisik kepada "logika mistika" (santet/kutukan) terjadi ketika kondisi teknologi atau pengetahuan ilmiah tidak tersedia (FALSE). Ketika instrumen verifikasi modern diterapkan (TRUE), entitas penyakit seperti hemofilia, kusta, dan pes teridentifikasi sebagai gangguan biologis spesifik (genetik/bakteri), bukan anomali metafisik. Selain itu, pengujian terkontrol terhadap klaim kemampuan supranatural (Stargate Project) menghasilkan output negatif dalam replikasi data, menegaskan bahwa fenomena tersebut adalah kebetulan statistik. Proses ini memvalidasi transisi dari asumsi mistis menuju pembuktian empiris sebagai metode penyelesaian masalah yang valid.
+        </p>
+    </div>
+
+    <div class="card">
+        <h2>Analyst Notes (Canvas)</h2>
+        <div class="canvas-wrapper" id="canvasWrap">
+            <canvas id="noteCanvas"></canvas>
+        </div>
+        <div class="toolbar">
+            <button onclick="clearCanvas()">Clear Board</button>
+            <button onclick="saveCanvas()">Save Note</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 1. DATA: Technical Logic Structure extracted from video
+    const logicData = {
+        "nodes": [
+            {"id": "N0", "label": "START: Phenomenon Observed", "type": "start", "level": 0},
+            {"id": "N1", "label": "DECISION: Scientific Tools Available?", "type": "decision", "level": 1},
+            
+            // Branch False (History/Ignorance)
+            {"id": "N2", "label": "PROCESS: Attribution to 'Logika Mistika'", "type": "process", "level": 2},
+            {"id": "N3", "label": "OUTPUT: Santet / Black Magic Claims", "type": "end", "level": 3},
+
+            // Branch True (Modern Science)
+            {"id": "N4", "label": "PROCESS: Empirical Investigation", "type": "process", "level": 2},
+            
+            // Sub-cases under Science
+            {"id": "N5", "label": "CASE: Unstoppable Bleeding", "type": "process", "level": 3},
+            {"id": "N6", "label": "ID: Hemophilia (Genetic)", "type": "end", "level": 4},
+            
+            {"id": "N7", "label": "CASE: Skin Decay / Isolation", "type": "process", "level": 3},
+            {"id": "N8", "label": "ID: Leprosy (M. leprae)", "type": "end", "level": 4},
+            
+            {"id": "N9", "label": "CASE: Mass Death / Buboes", "type": "process", "level": 3},
+            {"id": "N10", "label": "ID: Yersinia pestis (Plague)", "type": "end", "level": 4},
+            
+            {"id": "N11", "label": "CASE: Supernatural Claims", "type": "process", "level": 3},
+            {"id": "N12", "label": "TEST: CIA Project Stargate", "type": "process", "level": 4},
+            {"id": "N13", "label": "DECISION: Replicable?", "type": "decision", "level": 5},
+            {"id": "N14", "label": "OUTPUT: Statistical Coincidence", "type": "end", "level": 6}
+        ],
+        "edges": [
+            {"from": "N0", "to": "N1"},
+            {"from": "N1", "to": "N2", "condition": "FALSE"},
+            {"from": "N2", "to": "N3"},
+            {"from": "N1", "to": "N4", "condition": "TRUE"},
+            
+            {"from": "N4", "to": "N5"},
+            {"from": "N5", "to": "N6"},
+            
+            {"from": "N4", "to": "N7"},
+            {"from": "N7", "to": "N8"},
+            
+            {"from": "N4", "to": "N9"},
+            {"from": "N9", "to": "N10"},
+            
+            {"from": "N4", "to": "N11"},
+            {"from": "N11", "to": "N12"},
+            {"from": "N12", "to": "N13"},
+            {"from": "N13", "to": "N14", "condition": "FALSE"}
+        ]
+    };
+
+    // Display JSON
+    document.getElementById('jsonDisplay').textContent = JSON.stringify(logicData, null, 2);
+
+    // 2. RENDERER: SVG Logic Visualization
+    function renderRoadmap() {
+        const svg = document.getElementById('logicSvg');
+        const box = document.getElementById('roadmapBox');
+        const width = box.offsetWidth;
+        const height = 650;
         
-        let isDrawing = false;
-        let lastX = 0;
-        let lastY = 0;
+        // Configuration
+        const levelHeight = 100;
+        const nodeWidth = 180;
+        const nodeHeight = 50;
+        const startY = 50;
+        
+        // Group nodes by level
+        const levels = {};
+        logicData.nodes.forEach(node => {
+            if (!levels[node.level]) levels[node.level] = [];
+            levels[node.level].push(node);
+        });
 
-        function resizeCanvas() {
-            canvas.width = container.offsetWidth;
-            canvas.height = container.offsetHeight;
-            ctx.strokeStyle = '#000000';
-            ctx.lineJoin = 'round';
-            ctx.lineCap = 'round';
-            ctx.lineWidth = 2;
-        }
+        // Calculate Positions
+        const nodePositions = {};
+        Object.keys(levels).forEach(level => {
+            const nodesInLevel = levels[level];
+            const totalWidth = width;
+            const segmentWidth = totalWidth / (nodesInLevel.length + 1);
+            
+            nodesInLevel.forEach((node, index) => {
+                const x = segmentWidth * (index + 1) - (nodeWidth / 2);
+                const y = startY + (node.level * levelHeight);
+                nodePositions[node.id] = { x, y };
+                
+                // Draw Node
+                const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+                
+                const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+                rect.setAttribute("x", x);
+                rect.setAttribute("y", y);
+                rect.setAttribute("width", nodeWidth);
+                rect.setAttribute("height", nodeHeight);
+                rect.setAttribute("class", `node-rect type-${node.type}`);
+                
+                const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                text.setAttribute("x", x + nodeWidth/2);
+                text.setAttribute("y", y + nodeHeight/2 + 4);
+                text.setAttribute("text-anchor", "middle");
+                text.setAttribute("class", "node-text");
+                text.textContent = node.label.length > 25 ? node.label.substring(0, 23) + "..." : node.label;
+                
+                // Tooltip title
+                const title = document.createElementNS("http://www.w3.org/2000/svg", "title");
+                title.textContent = node.label;
+                rect.appendChild(title);
 
-        window.addEventListener('resize', resizeCanvas);
+                g.appendChild(rect);
+                g.appendChild(text);
+                svg.appendChild(g);
+            });
+        });
+
+        // Draw Edges
+        logicData.edges.forEach(edge => {
+            const start = nodePositions[edge.from];
+            const end = nodePositions[edge.to];
+            
+            if (start && end) {
+                const startX = start.x + nodeWidth/2;
+                const startY = start.y + nodeHeight;
+                const endX = end.x + nodeWidth/2;
+                const endY = end.y;
+
+                // Bezier Curve
+                const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                const d = `M ${startX} ${startY} C ${startX} ${startY + 40}, ${endX} ${endY - 40}, ${endX} ${endY}`;
+                path.setAttribute("d", d);
+                path.setAttribute("class", "edge-path");
+                svg.prepend(path); // Draw lines behind nodes
+
+                // Condition Label
+                if (edge.condition) {
+                    const midX = (startX + endX) / 2;
+                    const midY = (startY + endY) / 2;
+                    const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                    text.setAttribute("x", midX);
+                    text.setAttribute("y", midY);
+                    text.setAttribute("text-anchor", "middle");
+                    text.setAttribute("class", "edge-label");
+                    text.textContent = edge.condition;
+                    svg.appendChild(text);
+                }
+            }
+        });
+    }
+
+    // 3. CANVAS: Interactive Notes
+    const canvas = document.getElementById('noteCanvas');
+    const ctx = canvas.getContext('2d');
+    const canvasWrap = document.getElementById('canvasWrap');
+    
+    let isDrawing = false;
+    let lastX = 0;
+    let lastY = 0;
+
+    function resizeCanvas() {
+        canvas.width = canvasWrap.offsetWidth;
+        canvas.height = canvasWrap.offsetHeight;
+        ctx.strokeStyle = '#1D1D1F';
+        ctx.lineJoin = 'round';
+        ctx.lineCap = 'round';
+        ctx.lineWidth = 2;
+    }
+
+    window.addEventListener('resize', () => {
+        renderRoadmap(); // Re-render svg on resize
         resizeCanvas();
+    });
 
-        function draw(e) {
-            if (!isDrawing) return;
-            
-            // Get correct coordinates for mouse or touch
-            let clientX, clientY;
-            if(e.type.includes('touch')) {
-                clientX = e.touches[0].clientX;
-                clientY = e.touches[0].clientY;
-            } else {
-                clientX = e.clientX;
-                clientY = e.clientY;
-            }
+    // Initial calls
+    setTimeout(() => {
+        renderRoadmap();
+        resizeCanvas();
+    }, 100);
 
-            const rect = canvas.getBoundingClientRect();
-            const x = clientX - rect.left;
-            const y = clientY - rect.top;
+    // Drawing Logic
+    function draw(e) {
+        if (!isDrawing) return;
+        const rect = canvas.getBoundingClientRect();
+        const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+        const clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
+        const x = clientX - rect.left;
+        const y = clientY - rect.top;
 
-            ctx.beginPath();
-            ctx.moveTo(lastX, lastY);
-            ctx.lineTo(x, y);
-            ctx.stroke();
-            
-            [lastX, lastY] = [x, y];
-        }
+        ctx.beginPath();
+        ctx.moveTo(lastX, lastY);
+        ctx.lineTo(x, y);
+        ctx.stroke();
+        [lastX, lastY] = [x, y];
+    }
 
-        function startDrawing(e) {
-            isDrawing = true;
-            let clientX, clientY;
-            if(e.type.includes('touch')) {
-                clientX = e.touches[0].clientX;
-                clientY = e.touches[0].clientY;
-                // Prevent scrolling when touching canvas
-                e.preventDefault(); 
-            } else {
-                clientX = e.clientX;
-                clientY = e.clientY;
-            }
+    canvas.addEventListener('mousedown', (e) => {
+        isDrawing = true;
+        const rect = canvas.getBoundingClientRect();
+        [lastX, lastY] = [e.clientX - rect.left, e.clientY - rect.top];
+    });
+    canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('mouseup', () => isDrawing = false);
+    canvas.addEventListener('mouseout', () => isDrawing = false);
+    
+    // Touch support
+    canvas.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        isDrawing = true;
+        const rect = canvas.getBoundingClientRect();
+        [lastX, lastY] = [e.touches[0].clientX - rect.left, e.touches[0].clientY - rect.top];
+    }, {passive: false});
+    canvas.addEventListener('touchmove', (e) => { e.preventDefault(); draw(e); }, {passive: false});
+    canvas.addEventListener('touchend', () => isDrawing = false);
 
-            const rect = canvas.getBoundingClientRect();
-            [lastX, lastY] = [clientX - rect.left, clientY - rect.top];
-        }
+    function clearCanvas() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+    
+    function saveCanvas() {
+        const link = document.createElement('a');
+        link.download = 'analyst_notes.png';
+        link.href = canvas.toDataURL();
+        link.click();
+    }
 
-        function stopDrawing() {
-            isDrawing = false;
-        }
+</script>
 
-        // Mouse Events
-        canvas.addEventListener('mousedown', startDrawing);
-        canvas.addEventListener('mousemove', draw);
-        canvas.addEventListener('mouseup', stopDrawing);
-        canvas.addEventListener('mouseout', stopDrawing);
-
-        // Touch Events
-        canvas.addEventListener('touchstart', startDrawing, {passive: false});
-        canvas.addEventListener('touchmove', draw, {passive: false});
-        canvas.addEventListener('touchend', stopDrawing);
-
-        // Controls
-        function clearCanvas() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-        }
-
-        function downloadCanvas() {
-            const link = document.createElement('a');
-            link.download = 'analisis-logic-sketch.png';
-            link.href = canvas.toDataURL();
-            link.click();
-        }
-    </script>
 </body>
 </html>
