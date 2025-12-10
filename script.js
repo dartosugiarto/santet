@@ -1,29 +1,32 @@
+// Database Konten Lengkap (Dr. Ryu Hasan & Malaka Project)
 const contentData = {
     "start": {
         category: "01. OBSERVASI",
         title: "Fenomena Ganjil",
-        text: "Masyarakat sering menjumpai fenomena yang sulit dijelaskan: Kesurupan, melihat hantu, anak indigo, hingga penyakit aneh (santet). Kita sering terjebak pada penjelasan 'Logika Mistika'.",
-        analogy: "Seperti manusia purba melihat petir: Dianggap kemarahan Dewa Zeus, padahal itu listrik statis.",
-        caseStudy: "Tan Malaka menyebut 'Logika Mistika' sebagai cara berpikir yang berhenti pada takhayul tanpa mencari bukti konkret."
+        text: "Masyarakat sering menjumpai fenomena yang sulit dijelaskan: Kesurupan, melihat hantu, anak indigo, hingga penyakit aneh (santet). Tan Malaka menyebut ini sebagai 'Logika Mistika', yaitu kecenderungan mencari jawaban cepat berbasis takhayul.",
+        analogy: "Manusia purba melihat petir: Dianggap kemarahan Dewa, padahal itu listrik statis.",
+        caseStudy: "Pola pikir ini bertahan karena memberikan rasa 'aman' semu ketimbang mengakui 'saya tidak tahu'."
     },
+    
+    // CABANG MISTIKA
     "mistik_root": {
         category: "JALUR BUDAYA",
         title: "Logika Mistika",
-        text: "Kecenderungan otak untuk mencari jawaban cepat dan memuaskan, bukan jawaban yang benar. Mistis memberikan rasa 'aman' semu dan kepastian.",
-        analogy: "Mobil mogok: Lebih nyaman panggil dukun tiup mesin (ada harapan) daripada panggil montir yang bilang 'mesin hancur' (fakta pahit).",
-        caseStudy: "Wabah Flu Spanyol 1918: Orang lari ke dukun/agama karena kedokteran belum punya obat, memberikan ketenangan psikologis meski tetap meninggal."
+        text: "Otak manusia berevolusi untuk bertahan hidup, bukan untuk mencari kebenaran ilmiah. Mistis memberikan kepastian dan harapan, meskipun palsu.",
+        analogy: "Mobil mogok: Lebih nyaman panggil dukun (ada harapan sembuh) daripada panggil montir yang memvonis 'mesin hancur' (fakta pahit).",
+        caseStudy: "Wabah Flu Spanyol 1918: Karena dokter belum punya obat, orang lari ke pemuka agama/dukun. Hasilnya sama (meninggal), tapi lebih tenang secara psikologis."
     },
     "santet": {
         category: "KLAIM SUPRANATURAL",
         title: "Santet & Guna-guna",
-        text: "Penyakit mendadak, muntah darah, atau buta yang dianggap kiriman gaib. Seringkali ini adalah penyakit medis yang belum terdiagnosis.",
-        analogy: "Orang buta mendadak dituduh santet, padahal keracunan.",
+        text: "Penyakit mendadak, muntah darah, atau buta yang dianggap kiriman gaib. Seringkali ini adalah penyakit medis yang belum terdiagnosis karena keterbatasan pengetahuan.",
+        analogy: "Orang buta mendadak dituduh santet, padahal keracunan zat kimia.",
         caseStudy: "Kasus Atlet Buta: Mengaku disantet, ternyata keracunan Metanol (Alkohol Oplosan) yang merusak saraf mata."
     },
     "santet_medis": {
         category: "PENJELASAN SAINS",
         title: "Keracunan & Penyakit Langka",
-        text: "Banyak 'Santet' adalah penyakit medis: <br>1. <strong>Muntah Darah/Paku:</strong> Bisa jadi gangguan Pica (menelan benda asing) atau Hemofilia (darah sukar membeku).<br>2. <strong>Kusta/Leprosy:</strong> Dulu dianggap kutukan, ternyata bakteri.",
+        text: "Banyak 'Santet' adalah penyakit medis: <br>1. <strong>Muntah Darah/Paku:</strong> Bisa gangguan Pica (menelan benda asing) atau Hemofilia (darah sukar membeku).<br>2. <strong>Kusta/Leprosy:</strong> Dulu dianggap kutukan, ternyata bakteri.",
         analogy: "Clostridium Tetani (Tetanus): Membuat tubuh kaku melengkung seperti kerasukan setan, padahal infeksi bakteri tanah.",
         caseStudy: "Tidak ada satu pun laporan otopsi kedokteran di seluruh dunia yang menemukan paku/silet 'gaib' di dalam tubuh tanpa jalan masuk logis."
     },
@@ -46,7 +49,7 @@ const contentData = {
         title: "Ketindihan (Eureup-eureup)",
         text: "Bangun tidur tapi badan tidak bisa gerak, dada sesak, sering melihat bayangan hitam. Dianggap diduduki setan.",
         analogy: "Seperti komputer yang layarnya sudah nyala, tapi keyboard dan mouse belum connect.",
-        caseStudy: "Mitos di berbagai negara: Old Hag (Inggris), Kanashibari (Jepang)."
+        caseStudy: "Mitos di berbagai negara: Old Hag (Inggris), Kanashibari (Jepang), Eureup-eureup (Sunda)."
     },
     "sleep_paralysis": {
         category: "MEKANISME BIOLOGIS",
@@ -55,6 +58,8 @@ const contentData = {
         analogy: "Sistem keamanan mobil yang telat dibuka kuncinya saat pengemudi sudah masuk.",
         caseStudy: "Halusinasi bayangan hitam muncul karena otak panik (Amigdala aktif) mencari penjelasan kenapa tubuh lumpuh."
     },
+
+    // CABANG SAINS (KESURUPAN)
     "sains_root": {
         category: "PENDEKATAN NEUROSAINS",
         title: "Neurosains (Otak)",
@@ -106,30 +111,31 @@ const contentData = {
     },
     "evolusi": {
         category: "EVOLUSI",
-        title: "Evolusi & Survival",
+        title: "Evolusi Survival",
         text: "Kenapa kita takut hantu? Evolusi melatih otak kita untuk <strong>Paranoid</strong>. Lebih baik lari dari 'bayangan' yang dikira harimau, daripada diam ternyata harimau beneran.",
         analogy: "False Positive: Lebih baik salah sangka ada hantu, daripada salah sangka tidak ada predator.",
         caseStudy: "Manusia purba yang 'rasional' dan tidak takut semak bergoyang, sudah punah dimakan Singa. Kita adalah keturunan manusia penakut."
     }
 };
 
-// ... (Sisa kode script.js sama seperti sebelumnya: drawer logic, dll)
+// --- LOGIC DRAWER & INTERACTION ---
 const drawer = document.getElementById('rightDrawer');
 const overlay = document.getElementById('drawerOverlay');
 
 function openDrawer(key, event) {
     if(event) event.preventDefault();
+    
     const data = contentData[key];
     if(!data) return;
 
-    // Update Content
+    // 1. Populate Data
     document.getElementById('panelCategory').textContent = data.category;
     document.getElementById('panelTitle').textContent = data.title;
     document.getElementById('panelText').innerHTML = data.text;
     document.getElementById('panelAnalogy').innerHTML = data.analogy;
     document.getElementById('panelCase').innerHTML = data.caseStudy;
 
-    // Open
+    // 2. Open UI
     drawer.classList.add('open');
     overlay.classList.add('active');
 }
@@ -139,6 +145,9 @@ function closeDrawer() {
     overlay.classList.remove('active');
 }
 
+// Tutup dengan tombol ESC
 document.addEventListener('keydown', function(event) {
-    if (event.key === "Escape") closeDrawer();
+    if (event.key === "Escape") {
+        closeDrawer();
+    }
 });
