@@ -3,128 +3,116 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Analisis Logika: Kesurupan (Perspektif Neurosains)</title>
+    <title>Roadmap Logika Kesurupan</title>
     <link rel="stylesheet" href="style.css">
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Merriweather:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <nav class="top-nav">
         <div class="brand">
-            <span class="brand-icon">🧠</span>
+            <span class="back-arrow">←</span>
             <div class="brand-text">
-                <h1>Neurosains & Logika</h1>
-                <p>Bedah Fenomena: Kesurupan</p>
+                <h1>Bedah Logika: Kesurupan</h1>
+                <p>Analisis Struktural Berdasarkan Neurosains</p>
             </div>
         </div>
-        <div class="lecturer-tag">
-            <span>Ref: Dr. Ryu Hasan</span>
-        </div>
+        <div class="status-badge">Interactive Roadmap</div>
     </nav>
 
-    <main class="dashboard-grid">
+    <main class="container">
         
-        <section class="diagram-area">
-            <div class="tree-wrapper">
-                <div class="tree">
-                    <ul>
-                        <li>
-                            <a href="#" class="node-card start active" onclick="selectNode('start', event)">
-                                <span class="node-label">START</span>
-                                <span class="node-title">Fenomena</span>
-                            </a>
-                            <ul>
-                                <li>
-                                    <a href="#" class="node-card decision" onclick="selectNode('decision', event)">
-                                        <span class="node-icon">⚖️</span>
-                                        <span class="node-title">Pendekatan?</span>
-                                    </a>
-                                    <ul>
-                                        <li>
-                                            <a href="#" class="node-card path-mistik" onclick="selectNode('mistik', event)">
-                                                <span class="node-tag">Mitos</span>
-                                                <span class="node-title">Jalur Mistik</span>
-                                            </a>
-                                            <ul>
-                                                <li>
-                                                    <a href="#" class="node-card end-mistik" onclick="selectNode('dukun', event)">
-                                                        <span class="node-title">Output: Dukun</span>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                        
-                                        <li>
-                                            <a href="#" class="node-card path-sains" onclick="selectNode('sains', event)">
-                                                <span class="node-tag">Logika</span>
-                                                <span class="node-title">Jalur Medis</span>
-                                            </a>
-                                            <ul>
-                                                <li>
-                                                    <a href="#" class="node-card sub-sains" onclick="selectNode('kimia', event)">
-                                                        <span class="node-title">Kimia Otak</span>
-                                                    </a>
-                                                    <ul>
-                                                        <li>
-                                                            <a href="#" class="node-card solution" onclick="selectNode('solusi', event)">
-                                                                <span class="node-icon">✅</span>
-                                                                <span class="node-title">SOLUSI</span>
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </li>
-                                                <li>
-                                                    <a href="#" class="node-card sub-sains" onclick="selectNode('memori', event)">
-                                                        <span class="node-title">Memori</span>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
+        <div class="map-area">
+            <div class="tree">
+                <ul>
+                    <li>
+                        <a href="#" class="node-card start active" onclick="selectNode('start', event)">
+                            <span class="label">START</span>
+                            <span class="title">Fenomena Kesurupan</span>
+                        </a>
+                        <ul>
+                            <li>
+                                <a href="#" class="node-card purple" onclick="selectNode('decision', event)">
+                                    <span class="title">Pendekatan Analisis</span>
+                                </a>
+                                <ul>
+                                    <li>
+                                        <a href="#" class="node-card gray" onclick="selectNode('mistik', event)">
+                                            <span class="title">Jalur Mistik (Mitos)</span>
+                                        </a>
+                                        <ul>
+                                            <li>
+                                                <a href="#" class="node-card gray" onclick="selectNode('dukun', event)">
+                                                    <span class="title">Output: Dukun</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    
+                                    <li>
+                                        <a href="#" class="node-card purple" onclick="selectNode('sains', event)">
+                                            <span class="title">Jalur Medis (Sains)</span>
+                                        </a>
+                                        <ul>
+                                            <li>
+                                                <a href="#" class="node-card purple" onclick="selectNode('kimia', event)">
+                                                    <span class="title">Kimia Otak</span>
+                                                </a>
+                                                <ul>
+                                                    <li>
+                                                        <a href="#" class="node-card yellow" onclick="selectNode('solusi', event)">
+                                                            <span class="label">GOAL</span>
+                                                            <span class="title">Solusi & Penanganan</span>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li>
+                                                <a href="#" class="node-card purple" onclick="selectNode('memori', event)">
+                                                    <span class="title">Database Memori</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
             </div>
-            <p class="instruction-text">Klik salah satu node di atas untuk melihat analisis mendalam.</p>
-        </section>
+        </div>
 
-        <aside class="info-panel">
-            <div class="panel-header">
-                <div class="category-badge" id="panelCategory">KATEGORI</div>
+        <aside class="side-drawer" id="sideDrawer">
+            <button class="close-btn" onclick="closeDrawer()">×</button>
+            
+            <div class="drawer-header">
+                <span class="drawer-badge" id="panelCategory">KATEGORI</span>
                 <h2 id="panelTitle">Judul Materi</h2>
             </div>
             
-            <div class="panel-body">
-                <p id="panelText" class="main-content">Pilih elemen pada diagram untuk memulai kelas.</p>
+            <div class="drawer-content">
+                <p id="panelText">Penjelasan lengkap akan muncul di sini.</p>
                 
-                <div class="insight-cards">
-                    <div class="card card-analogy">
-                        <div class="card-icon">💡</div>
-                        <div class="card-content">
-                            <h5>Analogi Konsep</h5>
+                <div class="resource-links">
+                    <h3>Deep Dive</h3>
+                    <div class="link-item">
+                        <span class="icon">💡</span>
+                        <div>
+                            <strong>Analogi</strong>
                             <p id="panelAnalogy">-</p>
                         </div>
                     </div>
-                    
-                    <div class="card card-case">
-                        <div class="card-icon">📂</div>
-                        <div class="card-content">
-                            <h5>Studi Kasus</h5>
+                    <div class="link-item">
+                        <span class="icon">📂</span>
+                        <div>
+                            <strong>Studi Kasus</strong>
                             <p id="panelCase">-</p>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="panel-footer">
-                <a href="https://youtu.be/Yv2C6sLPM6g" target="_blank" class="citation-link">
-                    <span>Sumber: Video Kuliah Dr. Ryu Hasan</span>
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-                </a>
             </div>
         </aside>
 
