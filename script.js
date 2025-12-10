@@ -1,4 +1,4 @@
-// Database Konten
+// Database Konten (Isi materi tetap sama, struktur disesuaikan)
 const contentData = {
     "start": {
         category: "01. OBSERVASI",
@@ -59,39 +59,59 @@ const contentData = {
 };
 
 function selectNode(key, event) {
+    // Mencegah link meloncat ke atas halaman
     if(event) event.preventDefault();
 
     const data = contentData[key];
     if (!data) return;
 
-    // 1. Update Konten Panel
+    // --- 1. Update Text Konten ---
+    // Pastikan ID ini ada di HTML Anda
     const catEl = document.getElementById('panelCategory');
-    catEl.textContent = data.category;
-    
-    // Ubah warna badge berdasarkan kategori
-    if(key === 'mistik' || key === 'dukun') {
-        catEl.style.color = '#BE123C'; catEl.style.background = '#FFF1F2';
-    } else if (key === 'start' || key === 'decision') {
-        catEl.style.color = '#1E293B'; catEl.style.background = '#F1F5F9';
-    } else {
-        catEl.style.color = '#0369A1'; catEl.style.background = '#F0F9FF';
+    const titleEl = document.getElementById('panelTitle');
+    const textEl = document.getElementById('panelText');
+    const analogyEl = document.getElementById('panelAnalogy');
+    const caseEl = document.getElementById('panelCase');
+
+    if(catEl) catEl.textContent = data.category;
+    if(titleEl) titleEl.textContent = data.title;
+    if(textEl) textEl.innerHTML = data.text;
+    if(analogyEl) analogyEl.textContent = data.analogy;
+    if(caseEl) caseEl.textContent = data.caseStudy;
+
+    // --- 2. Update Warna Badge (Fitur Tambahan) ---
+    // Mengubah warna badge kategori sesuai jenis node
+    if(catEl) {
+        if(key === 'mistik' || key === 'dukun') {
+            catEl.style.color = '#BE123C'; // Merah
+            catEl.style.background = '#FFF1F2';
+        } else if (key === 'start' || key === 'decision') {
+            catEl.style.color = '#1E293B'; // Slate
+            catEl.style.background = '#F1F5F9';
+        } else if (key === 'solusi') {
+            catEl.style.color = '#059669'; // Hijau
+            catEl.style.background = '#ECFDF5';
+        } else {
+            catEl.style.color = '#0369A1'; // Biru
+            catEl.style.background = '#F0F9FF';
+        }
     }
 
-    document.getElementById('panelTitle').textContent = data.title;
-    document.getElementById('panelText').innerHTML = data.text;
-    document.getElementById('panelAnalogy').textContent = data.analogy;
-    document.getElementById('panelCase').textContent = data.caseStudy;
-
-    // 2. Update Visual Active State
+    // --- 3. Update Visual Active State (Warna Tombol) ---
+    // Hapus class 'active' dari semua node
     document.querySelectorAll('.node-card').forEach(el => el.classList.remove('active'));
     
+    // Tambahkan class 'active' ke node yang diklik
     if(event && event.currentTarget) {
         event.currentTarget.classList.add('active');
     } else {
+        // Fallback: cari berdasarkan class jika dipanggil manual (saat load awal)
         const defaultEl = document.querySelector(`.node-card.${key}`);
         if(defaultEl) defaultEl.classList.add('active');
     }
 }
 
-// Init
-selectNode('start', null);
+// Inisialisasi awal saat halaman dimuat
+document.addEventListener('DOMContentLoaded', () => {
+    selectNode('start', null);
+});
