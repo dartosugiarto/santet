@@ -6,17 +6,16 @@
     <title>System Analysis: Logic Structure</title>
     <style>
         :root {
-            --bg-body: #F5F5F7;
+            --bg-body: #FBFBFD;
             --bg-card: #FFFFFF;
             --text-primary: #1D1D1F;
             --text-secondary: #86868B;
             --accent-color: #0071E3;
-            --border-color: #D2D2D7;
-            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
-            --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.08);
-            --radius-md: 16px;
-            --radius-lg: 24px;
-            --font-stack: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --border-color: #E5E5EA;
+            --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.03);
+            --shadow-hover: 0 12px 24px rgba(0, 0, 0, 0.06);
+            --radius-lg: 20px;
+            --font-stack: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -25,111 +24,187 @@
             font-family: var(--font-stack);
             background-color: var(--bg-body);
             color: var(--text-primary);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            padding: 40px 20px;
+            overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
         }
 
-        .container {
-            max-width: 1000px;
-            width: 100%;
+        /* --- HERO SECTION (Diagram Area) --- */
+        .stage-area {
+            position: relative;
+            width: 100vw;
+            height: 75vh; /* Menguasai 75% tinggi layar */
+            background-image: radial-gradient(#D2D2D7 1.5px, transparent 1.5px);
+            background-size: 24px 24px;
+            background-color: #FAFAFC;
+            border-bottom: 1px solid var(--border-color);
+            overflow: hidden; /* SVG pan/zoom could be added here */
             display: flex;
             flex-direction: column;
-            gap: 32px;
+            align-items: center;
         }
 
-        /* Header */
-        header { text-align: left; padding: 0 8px; }
-        h1 { font-size: 28px; font-weight: 600; letter-spacing: -0.01em; margin-bottom: 8px; }
-        p.subtitle { font-size: 15px; color: var(--text-secondary); font-weight: 400; }
+        .header-overlay {
+            position: absolute;
+            top: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 12px 32px;
+            border-radius: 50px;
+            border: 1px solid rgba(0,0,0,0.05);
+            box-shadow: var(--shadow-sm);
+        }
 
-        /* Card Style */
+        h1 { font-size: 20px; font-weight: 600; color: var(--text-primary); margin: 0; }
+        p.subtitle { font-size: 13px; color: var(--text-secondary); margin-top: 2px; }
+
+        /* SVG Styles */
+        #roadmapBox {
+            width: 100%;
+            height: 100%;
+            overflow: auto; /* Allow scroll if diagram is huge */
+            display: flex;
+            justify-content: center;
+        }
+
+        svg { 
+            display: block; 
+            min-width: 100%; 
+            min-height: 100%;
+        }
+
+        /* Node Styling - Lebih Modern */
+        .node-rect { 
+            fill: #FFFFFF; 
+            stroke: #E5E5EA; 
+            stroke-width: 2px; 
+            rx: 12; 
+            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1); 
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.02)); 
+        }
+        .node-rect:hover { 
+            stroke: var(--accent-color); 
+            transform: translateY(-2px); 
+            filter: drop-shadow(0 8px 15px rgba(0,113,227,0.15)); 
+        }
+        
+        .node-text { 
+            font-family: var(--font-stack); 
+            font-size: 13px; 
+            fill: var(--text-primary); 
+            font-weight: 500; 
+            pointer-events: none; 
+        }
+
+        .edge-path { 
+            stroke: #C7C7CC; 
+            stroke-width: 2px; 
+            fill: none; 
+            stroke-linecap: round;
+        }
+        
+        .edge-label { 
+            font-size: 11px; 
+            fill: var(--accent-color); 
+            font-weight: 700; 
+            background: var(--bg-body); 
+            padding: 2px 4px;
+        }
+        
+        /* Node Type Colors */
+        .type-start { stroke: #1D1D1F; }
+        .type-decision { stroke-dasharray: 6; }
+        .type-end { stroke: #34C759; }
+
+        /* --- DASHBOARD CONTENT (Bawah) --- */
+        .dashboard-grid {
+            max-width: 1200px;
+            margin: -40px auto 60px; /* Overlap sedikit ke atas */
+            padding: 0 24px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            position: relative;
+            z-index: 20;
+        }
+
         .card {
             background: var(--bg-card);
             border-radius: var(--radius-lg);
             box-shadow: var(--shadow-sm);
             padding: 32px;
-            border: 1px solid rgba(0,0,0,0.02);
+            border: 1px solid var(--border-color);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
+        .card:hover { box-shadow: var(--shadow-hover); }
 
-        .card:hover { box-shadow: var(--shadow-md); }
+        .card.full-width { grid-column: span 2; }
 
         h2 {
-            font-size: 13px;
+            font-size: 12px;
             text-transform: uppercase;
-            letter-spacing: 0.08em;
+            letter-spacing: 0.1em;
             color: var(--text-secondary);
-            font-weight: 600;
-            margin-bottom: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
-
-        /* Roadmap SVG Container */
-        .roadmap-container {
-            width: 100%;
-            height: 600px;
-            overflow: auto;
-            position: relative;
-            background-image: radial-gradient(#E5E5EA 1px, transparent 1px);
-            background-size: 20px 20px;
-            border-radius: var(--radius-md);
-            border: 1px solid var(--border-color);
-        }
-
-        svg { display: block; width: 100%; height: 100%; min-width: 800px; min-height: 600px; }
         
-        /* Node Styles in SVG */
-        .node-rect { fill: #fff; stroke: #D2D2D7; stroke-width: 1.5px; rx: 8; transition: all 0.3s; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.05)); }
-        .node-rect:hover { stroke: var(--accent-color); stroke-width: 2px; }
-        .node-text { font-family: var(--font-stack); font-size: 12px; fill: var(--text-primary); font-weight: 500; pointer-events: none; }
-        .edge-path { stroke: #C7C7CC; stroke-width: 1.5px; fill: none; transition: stroke 0.3s; }
-        .edge-label { font-size: 10px; fill: var(--accent-color); background: #fff; font-weight: 600; }
+        h2::before {
+            content: '';
+            display: block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent-color);
+        }
 
-        /* JSON Display */
+        /* JSON Box */
         .json-box {
             background: #F5F5F7;
             padding: 20px;
-            border-radius: var(--radius-md);
+            border-radius: 12px;
             font-family: "SF Mono", "Menlo", monospace;
             font-size: 12px;
-            color: #333;
+            color: #444;
             overflow-x: auto;
-            border: 1px solid var(--border-color);
-            max-height: 300px;
+            border: 1px solid rgba(0,0,0,0.04);
+            max-height: 250px;
         }
 
-        /* Explanation */
+        /* Text Styling */
         .explanation {
-            font-size: 16px;
-            line-height: 1.6;
-            color: var(--text-primary);
-            max-width: 800px;
+            font-size: 15px;
+            line-height: 1.7;
+            color: #333;
         }
 
-        /* Canvas */
+        /* Canvas Tools */
         .canvas-wrapper {
             position: relative;
-            height: 300px;
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius-md);
-            background: #FFF;
+            height: 250px;
+            border: 1px dashed #D2D2D7;
+            border-radius: 12px;
+            background: #FAFAFC;
             cursor: crosshair;
             overflow: hidden;
         }
-        canvas { display: block; width: 100%; height: 100%; }
         
         .toolbar {
-            margin-top: 12px;
+            margin-top: 16px;
             display: flex;
             justify-content: flex-end;
             gap: 12px;
         }
         
         button {
-            background: transparent;
+            background: #fff;
             border: 1px solid var(--border-color);
             padding: 8px 16px;
             border-radius: 8px;
@@ -138,149 +213,141 @@
             cursor: pointer;
             font-weight: 500;
             transition: all 0.2s;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
         }
-        
         button:hover { background: #F5F5F7; border-color: #86868B; }
-        button.active { background: var(--text-primary); color: #fff; border-color: var(--text-primary); }
 
-        /* Badge Types */
-        .type-start { stroke: var(--text-primary); stroke-width: 2px; }
-        .type-decision { stroke: var(--accent-color); stroke-dasharray: 4; }
-        .type-process { stroke: #D2D2D7; }
-        .type-end { stroke: #34C759; stroke-width: 2px; }
-
+        /* Responsive */
+        @media (max-width: 768px) {
+            .dashboard-grid { grid-template-columns: 1fr; margin-top: 20px; }
+            .card.full-width { grid-column: span 1; }
+            .stage-area { height: 60vh; }
+        }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <header>
-        <h1>Logic Extraction: Mysticism vs Science</h1>
-        <p class="subtitle">Structural Analysis based on Video Content "Buta Karena Santet?"</p>
-    </header>
-
-    <div class="card">
-        <h2>Logic Flow Visualizer</h2>
-        <div class="roadmap-container" id="roadmapBox">
+    <section class="stage-area">
+        <div class="header-overlay">
+            <h1>Logic Extraction</h1>
+            <p class="subtitle">Mysticism vs Science: Structural Analysis</p>
+        </div>
+        
+        <div id="roadmapBox">
             <svg id="logicSvg"></svg>
         </div>
-    </div>
+    </section>
 
-    <div class="card">
-        <h2>Extracted Data Structure (JSON)</h2>
-        <div class="json-box">
-            <pre id="jsonDisplay"></pre>
+    <div class="dashboard-grid">
+        
+        <div class="card">
+            <h2>System Synthesis</h2>
+            <p class="explanation">
+                <strong>Analisis Inti:</strong> Atribusi fenomena fisik kepada "logika mistika" (santet) hanya valid jika <code>Scientific_Tools == FALSE</code>. <br><br>
+                Saat instrumen verifikasi diterapkan (<code>TRUE</code>), entitas penyakit (Hemofilia, Kusta, Pes) teridentifikasi sebagai gangguan biologis. Pengujian terkontrol (Stargate Project) menegaskan bahwa fenomena supranatural yang tidak dapat direplikasi hanyalah kebetulan statistik.
+            </p>
+        </div>
+
+        <div class="card">
+            <h2>Extracted Data (JSON)</h2>
+            <div class="json-box">
+                <pre id="jsonDisplay"></pre>
+            </div>
+        </div>
+
+        <div class="card full-width">
+            <h2>Analyst Notes</h2>
+            <div class="canvas-wrapper" id="canvasWrap">
+                <canvas id="noteCanvas"></canvas>
+            </div>
+            <div class="toolbar">
+                <button onclick="clearCanvas()">Clear Board</button>
+                <button onclick="saveCanvas()">Save Note as PNG</button>
+            </div>
         </div>
     </div>
-
-    <div class="card">
-        <h2>System Synthesis</h2>
-        <p class="explanation">
-            Analisis sistem menunjukkan bahwa atribusi fenomena fisik kepada "logika mistika" (santet/kutukan) terjadi ketika kondisi teknologi atau pengetahuan ilmiah tidak tersedia (FALSE). Ketika instrumen verifikasi modern diterapkan (TRUE), entitas penyakit seperti hemofilia, kusta, dan pes teridentifikasi sebagai gangguan biologis spesifik (genetik/bakteri), bukan anomali metafisik. Selain itu, pengujian terkontrol terhadap klaim kemampuan supranatural (Stargate Project) menghasilkan output negatif dalam replikasi data, menegaskan bahwa fenomena tersebut adalah kebetulan statistik. Proses ini memvalidasi transisi dari asumsi mistis menuju pembuktian empiris sebagai metode penyelesaian masalah yang valid.
-        </p>
-    </div>
-
-    <div class="card">
-        <h2>Analyst Notes (Canvas)</h2>
-        <div class="canvas-wrapper" id="canvasWrap">
-            <canvas id="noteCanvas"></canvas>
-        </div>
-        <div class="toolbar">
-            <button onclick="clearCanvas()">Clear Board</button>
-            <button onclick="saveCanvas()">Save Note</button>
-        </div>
-    </div>
-</div>
 
 <script>
-    // 1. DATA: Technical Logic Structure extracted from video
+    // --- 1. DATA LOGIC ---
     const logicData = {
         "nodes": [
             {"id": "N0", "label": "START: Phenomenon Observed", "type": "start", "level": 0},
-            {"id": "N1", "label": "DECISION: Scientific Tools Available?", "type": "decision", "level": 1},
+            {"id": "N1", "label": "DECISION: Scientific Tools?", "type": "decision", "level": 1},
             
-            // Branch False (History/Ignorance)
-            {"id": "N2", "label": "PROCESS: Attribution to 'Logika Mistika'", "type": "process", "level": 2},
-            {"id": "N3", "label": "OUTPUT: Santet / Black Magic Claims", "type": "end", "level": 3},
+            // Branch False
+            {"id": "N2", "label": "PROCESS: Mystical Attribution", "type": "process", "level": 2},
+            {"id": "N3", "label": "OUTPUT: Santet / Black Magic", "type": "end", "level": 3},
 
-            // Branch True (Modern Science)
+            // Branch True
             {"id": "N4", "label": "PROCESS: Empirical Investigation", "type": "process", "level": 2},
             
-            // Sub-cases under Science
             {"id": "N5", "label": "CASE: Unstoppable Bleeding", "type": "process", "level": 3},
             {"id": "N6", "label": "ID: Hemophilia (Genetic)", "type": "end", "level": 4},
             
-            {"id": "N7", "label": "CASE: Skin Decay / Isolation", "type": "process", "level": 3},
+            {"id": "N7", "label": "CASE: Skin Decay", "type": "process", "level": 3},
             {"id": "N8", "label": "ID: Leprosy (M. leprae)", "type": "end", "level": 4},
             
-            {"id": "N9", "label": "CASE: Mass Death / Buboes", "type": "process", "level": 3},
-            {"id": "N10", "label": "ID: Yersinia pestis (Plague)", "type": "end", "level": 4},
+            {"id": "N9", "label": "CASE: Mass Death", "type": "process", "level": 3},
+            {"id": "N10", "label": "ID: Plague (Y. pestis)", "type": "end", "level": 4},
             
             {"id": "N11", "label": "CASE: Supernatural Claims", "type": "process", "level": 3},
             {"id": "N12", "label": "TEST: CIA Project Stargate", "type": "process", "level": 4},
             {"id": "N13", "label": "DECISION: Replicable?", "type": "decision", "level": 5},
-            {"id": "N14", "label": "OUTPUT: Statistical Coincidence", "type": "end", "level": 6}
+            {"id": "N14", "label": "OUTPUT: Coincidence", "type": "end", "level": 6}
         ],
         "edges": [
             {"from": "N0", "to": "N1"},
             {"from": "N1", "to": "N2", "condition": "FALSE"},
             {"from": "N2", "to": "N3"},
             {"from": "N1", "to": "N4", "condition": "TRUE"},
-            
-            {"from": "N4", "to": "N5"},
-            {"from": "N5", "to": "N6"},
-            
-            {"from": "N4", "to": "N7"},
-            {"from": "N7", "to": "N8"},
-            
-            {"from": "N4", "to": "N9"},
-            {"from": "N9", "to": "N10"},
-            
-            {"from": "N4", "to": "N11"},
-            {"from": "N11", "to": "N12"},
-            {"from": "N12", "to": "N13"},
-            {"from": "N13", "to": "N14", "condition": "FALSE"}
+            {"from": "N4", "to": "N5"}, {"from": "N5", "to": "N6"},
+            {"from": "N4", "to": "N7"}, {"from": "N7", "to": "N8"},
+            {"from": "N4", "to": "N9"}, {"from": "N9", "to": "N10"},
+            {"from": "N4", "to": "N11"}, {"from": "N11", "to": "N12"},
+            {"from": "N12", "to": "N13"}, {"from": "N13", "to": "N14", "condition": "NO"}
         ]
     };
 
-    // Display JSON
     document.getElementById('jsonDisplay').textContent = JSON.stringify(logicData, null, 2);
 
-    // 2. RENDERER: SVG Logic Visualization
+    // --- 2. RENDERER ENGINE (Updated for Full Width) ---
     function renderRoadmap() {
         const svg = document.getElementById('logicSvg');
         const box = document.getElementById('roadmapBox');
-        const width = box.offsetWidth;
-        const height = 650;
         
-        // Configuration
-        const levelHeight = 100;
+        // Use container width, but minimum 1000px to prevent squeezing
+        const width = Math.max(box.offsetWidth, 1200); 
+        const height = box.offsetHeight || 600;
+        
+        // Reset content
+        svg.innerHTML = ''; 
+        svg.style.width = width + 'px'; // Enforce min width inside scroll
+
+        const levelHeight = 90;
         const nodeWidth = 180;
-        const nodeHeight = 50;
-        const startY = 50;
+        const nodeHeight = 46;
+        const startY = 80; // Add padding top
         
-        // Group nodes by level
         const levels = {};
         logicData.nodes.forEach(node => {
             if (!levels[node.level]) levels[node.level] = [];
             levels[node.level].push(node);
         });
 
-        // Calculate Positions
         const nodePositions = {};
         Object.keys(levels).forEach(level => {
             const nodesInLevel = levels[level];
-            const totalWidth = width;
-            const segmentWidth = totalWidth / (nodesInLevel.length + 1);
+            const segmentWidth = width / (nodesInLevel.length + 1);
             
             nodesInLevel.forEach((node, index) => {
                 const x = segmentWidth * (index + 1) - (nodeWidth / 2);
                 const y = startY + (node.level * levelHeight);
                 nodePositions[node.id] = { x, y };
                 
-                // Draw Node
+                // Draw Node Group
                 const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
                 
+                // Rect
                 const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
                 rect.setAttribute("x", x);
                 rect.setAttribute("y", y);
@@ -288,25 +355,21 @@
                 rect.setAttribute("height", nodeHeight);
                 rect.setAttribute("class", `node-rect type-${node.type}`);
                 
+                // Text
                 const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
                 text.setAttribute("x", x + nodeWidth/2);
-                text.setAttribute("y", y + nodeHeight/2 + 4);
+                text.setAttribute("y", y + nodeHeight/2 + 5);
                 text.setAttribute("text-anchor", "middle");
                 text.setAttribute("class", "node-text");
                 text.textContent = node.label.length > 25 ? node.label.substring(0, 23) + "..." : node.label;
                 
-                // Tooltip title
-                const title = document.createElementNS("http://www.w3.org/2000/svg", "title");
-                title.textContent = node.label;
-                rect.appendChild(title);
-
                 g.appendChild(rect);
                 g.appendChild(text);
                 svg.appendChild(g);
             });
         });
 
-        // Draw Edges
+        // Draw Edges (Curved Lines)
         logicData.edges.forEach(edge => {
             const start = nodePositions[edge.from];
             const end = nodePositions[edge.to];
@@ -317,59 +380,69 @@
                 const endX = end.x + nodeWidth/2;
                 const endY = end.y;
 
-                // Bezier Curve
+                // Smooth Bezier
                 const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-                const d = `M ${startX} ${startY} C ${startX} ${startY + 40}, ${endX} ${endY - 40}, ${endX} ${endY}`;
+                const controlY = (endY - startY) / 2;
+                const d = `M ${startX} ${startY} C ${startX} ${startY + controlY}, ${endX} ${endY - controlY}, ${endX} ${endY}`;
+                
                 path.setAttribute("d", d);
                 path.setAttribute("class", "edge-path");
-                svg.prepend(path); // Draw lines behind nodes
+                svg.prepend(path); 
 
-                // Condition Label
+                // Condition Labels
                 if (edge.condition) {
                     const midX = (startX + endX) / 2;
                     const midY = (startY + endY) / 2;
+                    
+                    // Small background for text readability on lines
+                    const textBg = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+                    textBg.setAttribute("x", midX - 20);
+                    textBg.setAttribute("y", midY - 10);
+                    textBg.setAttribute("width", 40);
+                    textBg.setAttribute("height", 20);
+                    textBg.setAttribute("fill", "#FAFAFC");
+                    textBg.setAttribute("rx", 4);
+                    
                     const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
                     text.setAttribute("x", midX);
-                    text.setAttribute("y", midY);
+                    text.setAttribute("y", midY + 4);
                     text.setAttribute("text-anchor", "middle");
                     text.setAttribute("class", "edge-label");
                     text.textContent = edge.condition;
+                    
+                    svg.appendChild(textBg);
                     svg.appendChild(text);
                 }
             }
         });
     }
 
-    // 3. CANVAS: Interactive Notes
+    // --- 3. CANVAS LOGIC ---
     const canvas = document.getElementById('noteCanvas');
     const ctx = canvas.getContext('2d');
     const canvasWrap = document.getElementById('canvasWrap');
-    
     let isDrawing = false;
-    let lastX = 0;
-    let lastY = 0;
+    let lastX = 0, lastY = 0;
 
     function resizeCanvas() {
         canvas.width = canvasWrap.offsetWidth;
         canvas.height = canvasWrap.offsetHeight;
-        ctx.strokeStyle = '#1D1D1F';
+        ctx.strokeStyle = '#0071E3'; // Blue pen
         ctx.lineJoin = 'round';
         ctx.lineCap = 'round';
-        ctx.lineWidth = 2;
+        ctx.lineWidth = 3;
     }
 
     window.addEventListener('resize', () => {
-        renderRoadmap(); // Re-render svg on resize
+        renderRoadmap();
         resizeCanvas();
     });
 
-    // Initial calls
     setTimeout(() => {
         renderRoadmap();
         resizeCanvas();
     }, 100);
 
-    // Drawing Logic
     function draw(e) {
         if (!isDrawing) return;
         const rect = canvas.getBoundingClientRect();
@@ -414,7 +487,6 @@
         link.href = canvas.toDataURL();
         link.click();
     }
-
 </script>
 
 </body>
