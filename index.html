@@ -6,7 +6,7 @@
     <title>Logic Extraction: Canvas Mode</title>
     <style>
         :root {
-            --bg-canvas: #F5F5F7; /* Warna dasar kanvas */
+            --bg-canvas: #F5F5F7;
             --bg-ui: #FFFFFF;
             --text-primary: #1D1D1F;
             --accent-color: #0071E3;
@@ -21,67 +21,61 @@
             font-family: var(--font-stack);
             background-color: var(--bg-canvas);
             color: var(--text-primary);
-            overflow-x: hidden; /* Mencegah scroll horizontal halaman */
+            overflow-x: hidden;
         }
 
         /* --- 1. INFINITE CANVAS AREA --- */
-        /* Ini adalah area diagram yang "Bebas" */
         #canvas-container {
             position: relative;
-            width: 100vw;   /* Lebar penuh layar */
-            height: 80vh;   /* Tinggi 80% dari layar */
+            width: 100vw;
+            height: 80vh; /* Porsi layar untuk diagram */
             background-image: 
                 radial-gradient(#C7C7CC 1px, transparent 1px);
-            background-size: 24px 24px; /* Pola titik-titik halus */
+            background-size: 24px 24px;
             background-color: var(--bg-canvas);
-            overflow: auto; /* Scroll jika diagram terlalu besar */
+            overflow: auto;
             cursor: grab;
             border-bottom: 1px solid var(--border-color);
         }
 
-        #canvas-container:active {
-            cursor: grabbing;
-        }
+        #canvas-container:active { cursor: grabbing; }
 
-        /* SVG Diagram */
         svg {
             display: block;
-            /* Pastikan SVG cukup besar agar node tidak terpotong */
             min-width: 100%; 
             min-height: 100%;
         }
 
-        /* Header Melayang (Floating UI) */
+        /* Header Melayang */
         .floating-header {
             position: absolute;
             top: 24px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(255, 255, 255, 0.85);
+            background: rgba(255, 255, 255, 0.9);
             backdrop-filter: blur(10px);
-            padding: 12px 30px;
+            padding: 10px 24px;
             border-radius: 50px;
             box-shadow: var(--shadow-float);
             border: 1px solid rgba(0,0,0,0.05);
             text-align: center;
             z-index: 100;
-            pointer-events: none; /* Agar klik tembus ke bawah jika perlu */
+            pointer-events: none;
         }
 
-        .floating-header h1 { font-size: 18px; margin: 0; }
-        .floating-header p { font-size: 12px; margin: 4px 0 0 0; color: #86868B; }
+        .floating-header h1 { font-size: 16px; margin: 0; font-weight: 600; }
+        .floating-header p { font-size: 12px; margin: 2px 0 0 0; color: #86868B; }
 
-        /* --- 2. NODE STYLES (Modern & Clean) --- */
+        /* --- 2. NODE STYLES --- */
         .node-rect {
             fill: #FFFFFF;
             stroke: #D2D2D7;
             stroke-width: 2px;
-            rx: 12; /* Rounded corners */
+            rx: 12;
             filter: drop-shadow(0 2px 4px rgba(0,0,0,0.05));
             transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
-        /* Hover Effect pada Node */
         .node-group:hover .node-rect {
             stroke: var(--accent-color);
             transform: translateY(-2px);
@@ -111,51 +105,52 @@
             text-transform: uppercase;
         }
 
-        /* --- 3. PANEL BAWAH (Terpisah) --- */
+        /* --- 3. PANEL BAWAH (Hanya Sintesis) --- */
         .details-panel {
             padding: 40px 20px;
-            max-width: 1000px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
+            display: flex;
+            justify-content: center; /* Center konten */
+            background: #fff;
         }
 
-        .info-card {
-            background: white;
-            padding: 24px;
-            border-radius: 16px;
-            border: 1px solid var(--border-color);
+        .synthesis-card {
+            max-width: 700px;
+            width: 100%;
+            text-align: center;
         }
         
-        .full-width { grid-column: span 2; }
+        .synthesis-card h2 {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #86868B;
+            margin-bottom: 16px;
+        }
 
-        h2 { font-size: 14px; text-transform: uppercase; letter-spacing: 0.05em; color: #86868B; margin-top: 0; }
-        pre { background: #F5F5F7; padding: 15px; border-radius: 8px; overflow-x: auto; font-size: 11px; }
+        .synthesis-text {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #1D1D1F;
+        }
 
     </style>
 </head>
 <body>
 
     <div id="canvas-container">
-        
         <div class="floating-header">
             <h1>Logic Structure</h1>
-            <p>Buta Karena Santet? (Analisis Sistem)</p>
+            <p>Mysticism vs Science Analysis</p>
         </div>
-
         <svg id="logicSvg"></svg>
     </div>
 
     <div class="details-panel">
-        <div class="info-card">
-            <h2>Data Structure (JSON)</h2>
-            <pre id="jsonDisplay"></pre>
-        </div>
-        <div class="info-card">
-            <h2>Synthesis</h2>
-            <p style="font-size: 14px; line-height: 1.6; color: #333;">
-                Diagram di atas memisahkan jalur logika antara <strong>Atribusi Mistis</strong> (ketika alat ilmiah tidak ada) dan <strong>Pembuktian Empiris</strong>. Ini menunjukkan bahwa "santet" seringkali adalah <em>placeholder</em> untuk diagnosa medis yang belum teridentifikasi (seperti Kusta atau Hemofilia).
+        <div class="synthesis-card">
+            <h2>System Synthesis</h2>
+            <p class="synthesis-text">
+                Analisis logika menunjukkan bahwa atribusi fenomena fisik kepada <strong>"Mistika" (Santet)</strong> terjadi hanya ketika variabel <strong>Alat Ilmiah</strong> bernilai <em>FALSE</em>. <br><br>
+                Ketika instrumen verifikasi diterapkan (<em>TRUE</em>), entitas penyakit seperti Hemofilia dan Kusta teridentifikasi sebagai gangguan biologis, bukan anomali metafisik. Diagram ini memvalidasi transisi dari asumsi mistis menuju pembuktian empiris.
             </p>
         </div>
     </div>
@@ -167,11 +162,11 @@
             {"id": "N0", "label": "START: Phenomenon", "level": 0},
             {"id": "N1", "label": "? Scientific Tools Available", "level": 1, "type": "decision"},
             
-            // Kiri
+            // Kiri (Mistis)
             {"id": "N2", "label": "Mystical Attribution", "level": 2},
             {"id": "N3", "label": "OUTPUT: Santet Idea", "level": 3, "type": "end"},
 
-            // Kanan
+            // Kanan (Sains)
             {"id": "N4", "label": "Empirical Investigation", "level": 2},
             
             {"id": "N5", "label": "Bleeding Case", "level": 3},
@@ -196,28 +191,25 @@
         ]
     };
 
-    document.getElementById('jsonDisplay').textContent = JSON.stringify(logicData, null, 2);
-
     // RENDERER LOGIC
     function render() {
         const container = document.getElementById('canvas-container');
         const svg = document.getElementById('logicSvg');
         
-        // Ukuran Kanvas Dinamis
-        // Kita set width min 1200 agar diagram tidak gepeng, user bisa scroll
+        // Lebar dinamis, minimal 1200px agar nyaman discroll
         const width = Math.max(container.offsetWidth, 1200); 
-        const height = 600;
+        const height = 650;
         
         svg.style.width = width + "px";
         svg.style.height = height + "px";
-        svg.innerHTML = ''; // Reset
+        svg.innerHTML = '';
 
         const levelY = 100;
         const startY = 80;
         const nodeW = 160;
         const nodeH = 44;
 
-        // Group by Level
+        // Grouping
         const levels = {};
         logicData.nodes.forEach(n => {
             if(!levels[n.level]) levels[n.level] = [];
@@ -238,7 +230,7 @@
             });
         });
 
-        // Draw Edges First (Behind nodes)
+        // Draw Edges
         logicData.edges.forEach(e => {
             const s = pos[e.from];
             const t = pos[e.to];
@@ -248,19 +240,17 @@
                 const tx = t.x + nodeW/2;
                 const ty = t.y;
 
-                // Bezier
                 const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
                 const cY = (ty - sy) / 2;
                 path.setAttribute("d", `M ${sx} ${sy} C ${sx} ${sy+cY}, ${tx} ${ty-cY}, ${tx} ${ty}`);
                 path.setAttribute("class", "edge-path");
-                if(e.label === "NO") path.setAttribute("stroke-dasharray", "4"); // Putus-putus untuk NO
+                if(e.label === "NO") path.setAttribute("stroke-dasharray", "4"); 
                 svg.appendChild(path);
 
                 if(e.label) {
                     const mx = (sx+tx)/2;
                     const my = (sy+ty)/2;
                     
-                    // Background Text Label (agar kabel tidak menabrak teks)
                     const bg = document.createElementNS("http://www.w3.org/2000/svg", "rect");
                     bg.setAttribute("x", mx - 15); bg.setAttribute("y", my - 8);
                     bg.setAttribute("width", 30); bg.setAttribute("height", 16);
@@ -287,7 +277,8 @@
             rect.setAttribute("x", p.x); rect.setAttribute("y", p.y);
             rect.setAttribute("width", nodeW); rect.setAttribute("height", nodeH);
             rect.setAttribute("class", "node-rect");
-            // Warna border khusus untuk Start/End
+            
+            // Style khusus
             if(n.type === 'end') rect.style.stroke = "#34C759";
             if(n.type === 'decision') rect.style.strokeDasharray = "4";
 
