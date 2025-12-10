@@ -3,17 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Logika Kesurupan: Bedah Neurosains</title>
+    <title>Logika Neurosains: Fenomena Kesurupan</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
-<div class="container">
-    <div class="card-wrapper" id="cardPanel">
+    <div class="main-container">
+        <header>
+            <h1>Bedah Logika: Kesurupan</h1>
+            <p>Analisis Struktural Berdasarkan Neurosains (Dr. Ryu Hasan)</p>
+        </header>
+
+        <div class="diagram-area">
+            <svg id="logicSvg" viewBox="0 0 1000 500">
+                <path d="M 500 60 L 500 120" class="edge-line"></path> <path d="M 500 170 C 500 170, 250 170, 250 220" class="edge-line dashed"></path> <path d="M 250 270 L 250 320" class="edge-line dashed"></path> <path d="M 500 170 C 500 170, 750 170, 750 220" class="edge-line"></path> <path d="M 750 270 L 650 320" class="edge-line"></path> <path d="M 750 270 L 850 320" class="edge-line"></path> <path d="M 750 370 L 750 420" class="edge-line"></path> <g class="node-group active" onclick="selectNode('start')" transform="translate(500, 40)">
+                    <rect x="-100" y="-20" width="200" height="40" rx="20" class="node-rect start"></rect>
+                    <text y="5" class="node-label">START: Fenomena Kesurupan</text>
+                </g>
+
+                <g class="node-group" onclick="selectNode('decision')" transform="translate(500, 145)">
+                    <rect x="-110" y="-25" width="220" height="50" rx="10" class="node-rect decision"></rect>
+                    <text y="5" class="node-label">? Pendekatan Ilmiah</text>
+                </g>
+
+                <g class="node-group" onclick="selectNode('mistik')" transform="translate(250, 245)">
+                    <rect x="-90" y="-20" width="180" height="40" rx="8" class="node-rect myth"></rect>
+                    <text y="5" class="node-label">Jalur A: Mistik/Klenik</text>
+                </g>
+
+                <g class="node-group" onclick="selectNode('sains')" transform="translate(750, 245)">
+                    <rect x="-90" y="-20" width="180" height="40" rx="8" class="node-rect science"></rect>
+                    <text y="5" class="node-label">Jalur B: Medis (DTD)</text>
+                </g>
+
+                <g class="node-group" onclick="selectNode('dukun')" transform="translate(250, 345)">
+                    <rect x="-90" y="-20" width="180" height="40" rx="8" class="node-rect myth-end"></rect>
+                    <text y="5" class="node-label">Output: Dukun & Sugesti</text>
+                </g>
+
+                <g class="node-group" onclick="selectNode('kimia')" transform="translate(650, 345)">
+                    <rect x="-80" y="-20" width="160" height="40" rx="8" class="node-rect chemical"></rect>
+                    <text y="5" class="node-label">Mekanisme Kimia Otak</text>
+                </g>
+
+                <g class="node-group" onclick="selectNode('memori')" transform="translate(850, 345)">
+                    <rect x="-80" y="-20" width="160" height="40" rx="8" class="node-rect memory"></rect>
+                    <text y="5" class="node-label">Database Memori</text>
+                </g>
+
+                <g class="node-group" onclick="selectNode('solusi')" transform="translate(750, 445)">
+                    <rect x="-100" y="-20" width="200" height="40" rx="20" class="node-rect solution"></rect>
+                    <text y="5" class="node-label">SOLUSI: Putus Siklus</text>
+                </g>
+            </svg>
+            <p class="instruction">👆 Klik salah satu kotak di atas untuk melihat detail penjelasannya</p>
         </div>
-</div>
 
-<script src="script.js"></script>
+        <div class="info-panel" id="infoCard">
+            <div class="panel-header">
+                <div class="icon-badge" id="panelIcon">🧠</div>
+                <div>
+                    <h4 id="panelCategory">PENDAHULUAN</h4>
+                    <h2 id="panelTitle">Fenomena Kesurupan</h2>
+                </div>
+            </div>
+            
+            <div class="panel-body">
+                <div class="main-text">
+                    <p id="panelText">Pilih salah satu tahapan di diagram untuk mempelajari logika di baliknya.</p>
+                </div>
+                
+                <div class="cards-grid">
+                    <div class="mini-card analogy">
+                        <h5>💡 Analogi Sederhana</h5>
+                        <p id="panelAnalogy">-</p>
+                    </div>
+                    <div class="mini-card study">
+                        <h5>📂 Studi Kasus / Fakta</h5>
+                        <p id="panelCase">-</p>
+                    </div>
+                </div>
+                
+                <div class="source-citation">
+                    Sumber: <a href="https://youtu.be/Yv2C6sLPM6g" target="_blank">Dr. Ryu Hasan - Kesurupan dalam Perspektif Neurosains</a>
+                </div>
+            </div>
+        </div>
 
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
