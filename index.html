@@ -3,51 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roadmap: Logika Kesurupan</title>
+    <title>Roadmap Kesurupan</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <nav class="top-nav">
         <div class="brand">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
-            <div class="brand-text">
-                <h1>Bedah Logika: Kesurupan</h1>
-                <p>Analisis Struktural Berdasarkan Neurosains</p>
-            </div>
+            <span class="brand-text">Bedah Logika: <strong>Kesurupan</strong></span>
         </div>
-        <div class="status-badge">Interactive Mode</div>
+        <div class="status-badge">Roadmap Mode</div>
     </nav>
 
-    <main class="dashboard-grid">
+    <main class="roadmap-container">
         
-        <div class="map-area">
+        <div class="diagram-canvas">
             <div class="tree">
                 <ul>
                     <li>
-                        <a href="#" class="node-card start" onclick="selectNode('start', event)">
-                            <div class="node-icon-wrapper">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="10 8 16 12 10 16 10 8"></polygon></svg>
-                            </div>
-                            <div class="node-content">
-                                <span class="label">START</span>
-                                <span class="title">Fenomena Kesurupan</span>
-                            </div>
+                        <a href="#" class="node-card yellow" onclick="openDrawer('start', event)">
+                            <span class="label">START</span>
+                            <span class="title">Fenomena Kesurupan</span>
                         </a>
                         <ul>
                             <li>
-                                <a href="#" class="node-card purple" onclick="selectNode('decision', event)">
+                                <a href="#" class="node-card purple" onclick="openDrawer('decision', event)">
                                     <span class="title">Pendekatan Analisis</span>
                                 </a>
                                 <ul>
                                     <li>
-                                        <a href="#" class="node-card gray" onclick="selectNode('mistik', event)">
+                                        <a href="#" class="node-card gray" onclick="openDrawer('mistik', event)">
                                             <span class="title">Jalur Mistik (Mitos)</span>
                                         </a>
                                         <ul>
                                             <li>
-                                                <a href="#" class="node-card gray" onclick="selectNode('dukun', event)">
+                                                <a href="#" class="node-card gray" onclick="openDrawer('dukun', event)">
                                                     <span class="title">Output: Dukun</span>
                                                 </a>
                                             </li>
@@ -55,30 +46,25 @@
                                     </li>
                                     
                                     <li>
-                                        <a href="#" class="node-card purple" onclick="selectNode('sains', event)">
+                                        <a href="#" class="node-card purple" onclick="openDrawer('sains', event)">
                                             <span class="title">Jalur Medis (Sains)</span>
                                         </a>
                                         <ul>
                                             <li>
-                                                <a href="#" class="node-card purple" onclick="selectNode('kimia', event)">
+                                                <a href="#" class="node-card purple" onclick="openDrawer('kimia', event)">
                                                     <span class="title">Kimia Otak</span>
                                                 </a>
                                                 <ul>
                                                     <li>
-                                                        <a href="#" class="node-card yellow" onclick="selectNode('solusi', event)">
-                                                            <div class="node-icon-wrapper">
-                                                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-                                                            </div>
-                                                            <div class="node-content">
-                                                                <span class="label">GOAL</span>
-                                                                <span class="title">Solusi & Penanganan</span>
-                                                            </div>
+                                                        <a href="#" class="node-card green" onclick="openDrawer('solusi', event)">
+                                                            <div class="icon-check">✓</div>
+                                                            <span class="title">Solusi & Penanganan</span>
                                                         </a>
                                                     </li>
                                                 </ul>
                                             </li>
                                             <li>
-                                                <a href="#" class="node-card purple" onclick="selectNode('memori', event)">
+                                                <a href="#" class="node-card purple" onclick="openDrawer('memori', event)">
                                                     <span class="title">Database Memori</span>
                                                 </a>
                                             </li>
@@ -92,51 +78,40 @@
             </div>
         </div>
 
-        <aside class="sidebar-panel">
+        <aside class="drawer" id="rightDrawer">
+            <button class="close-btn" onclick="closeDrawer()">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
             
-            <div id="emptyState" class="empty-state">
-                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
-                <p>Klik salah satu kotak di diagram<br>untuk melihat detail penjelasan.</p>
+            <div class="drawer-header">
+                <span class="topic-badge" id="panelCategory">Topic</span>
+                <h2 id="panelTitle">Judul Materi</h2>
             </div>
-
-            <div id="contentState" class="content-state" style="display: none;">
-                <div class="panel-header">
-                    <div class="header-icon-badge" id="panelIcon"></div>
-                    <div>
-                        <span class="drawer-badge" id="panelCategory">KATEGORI</span>
-                        <h2 id="panelTitle">Judul</h2>
-                    </div>
-                </div>
+            
+            <div class="drawer-content">
+                <p id="panelText" class="main-desc">Isi materi...</p>
                 
-                <div class="panel-body">
-                    <div class="main-text" id="panelText">...</div>
-                    
-                    <div class="resource-section">
-                        <h3>Deep Dive</h3>
-                        
-                        <div class="resource-card">
-                            <div class="res-icon">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
-                            </div>
-                            <div class="res-content">
-                                <strong>Analogi Sederhana</strong>
-                                <p id="panelAnalogy">-</p>
-                            </div>
+                <div class="resources">
+                    <h3>Deep Dive</h3>
+                    <a href="#" class="res-link">
+                        <span class="res-icon">💡</span>
+                        <div class="res-info">
+                            <strong>Analogi</strong>
+                            <span id="panelAnalogy">-</span>
                         </div>
-
-                        <div class="resource-card">
-                            <div class="res-icon">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-                            </div>
-                            <div class="res-content">
-                                <strong>Studi Kasus / Fakta</strong>
-                                <p id="panelCase">-</p>
-                            </div>
+                    </a>
+                    <a href="#" class="res-link">
+                        <span class="res-icon">📂</span>
+                        <div class="res-info">
+                            <strong>Studi Kasus</strong>
+                            <span id="panelCase">-</span>
                         </div>
-                    </div>
+                    </a>
                 </div>
             </div>
         </aside>
+
+        <div class="overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
 
     </main>
 
