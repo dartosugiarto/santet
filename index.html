@@ -7,7 +7,6 @@
     <style>
         :root {
             --bg-canvas: #F5F5F7;
-            --bg-ui: #FFFFFF;
             --text-primary: #1D1D1F;
             --accent-color: #0071E3;
             --border-color: #E5E5EA;
@@ -28,9 +27,9 @@
         #canvas-container {
             position: relative;
             width: 100vw;
-            height: 80vh; /* Porsi layar untuk diagram */
+            height: 75vh; /* Mengambil 75% tinggi layar */
             background-image: 
-                radial-gradient(#C7C7CC 1px, transparent 1px);
+                radial-gradient(#C7C7CC 1.5px, transparent 1.5px);
             background-size: 24px 24px;
             background-color: var(--bg-canvas);
             overflow: auto;
@@ -109,8 +108,9 @@
         .details-panel {
             padding: 40px 20px;
             display: flex;
-            justify-content: center; /* Center konten */
+            justify-content: center;
             background: #fff;
+            min-height: 25vh; /* Sisa tinggi layar */
         }
 
         .synthesis-card {
@@ -156,7 +156,7 @@
     </div>
 
 <script>
-    // DATA LOGIC
+    // DATA LOGIC (Internal Engine - Tidak Ditampilkan di UI)
     const logicData = {
         "nodes": [
             {"id": "N0", "label": "START: Phenomenon", "level": 0},
