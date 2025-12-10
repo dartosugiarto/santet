@@ -3,348 +3,248 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kesurupan: Neurosains vs Mitos</title>
+    <title>Logika Kesurupan: Bedah Neurosains</title>
     <style>
         :root {
-            --bg-canvas: #F5F5F7;
-            --text-primary: #1D1D1F;
-            --text-secondary: #86868B;
-            --accent-science: #0071E3; /* Biru untuk Sains */
-            --accent-myth: #FF3B30;    /* Merah untuk Mitos */
-            --node-bg: #FFFFFF;
-            --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.05);
-            --shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.1);
-            --font-stack: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, sans-serif;
+            --primary: #4A90E2;      /* Biru Medis */
+            --accent: #50E3C2;       /* Hijau Flat Modern */
+            --text-dark: #2C3E50;
+            --text-light: #7F8C8D;
+            --bg: #F0F4F8;
+            --card-bg: #FFFFFF;
+            --shadow: 0 10px 30px rgba(0,0,0,0.08);
+            --radius: 20px;
         }
 
         body {
-            margin: 0;
-            padding: 0;
-            font-family: var(--font-stack);
-            background-color: var(--bg-canvas);
-            color: var(--text-primary);
-            overflow: hidden; /* Canvas mode */
-        }
-
-        /* --- 1. INFINITE CANVAS AREA --- */
-        #canvas-container {
-            position: relative;
-            width: 100vw;
-            height: 100vh;
-            background-image: radial-gradient(#D2D2D7 1.5px, transparent 1.5px);
-            background-size: 24px 24px;
-            cursor: grab;
-            overflow: hidden; /* Kita akan implementasi pan/zoom sederhana */
-        }
-
-        #canvas-container:active { cursor: grabbing; }
-
-        /* Floating Header */
-        .header-float {
-            position: absolute;
-            top: 24px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(12px);
-            padding: 12px 32px;
-            border-radius: 40px;
-            box-shadow: var(--shadow-soft);
-            text-align: center;
-            z-index: 100;
-            border: 1px solid rgba(0,0,0,0.05);
-            pointer-events: none;
-        }
-        .header-float h1 { font-size: 18px; margin: 0; font-weight: 700; color: #111; }
-        .header-float p { font-size: 12px; margin: 4px 0 0; color: var(--text-secondary); }
-
-        /* SVG Diagram */
-        svg {
-            width: 100%;
-            height: 100%;
-            display: block;
-        }
-
-        /* Node Styles */
-        .node-rect {
-            fill: var(--node-bg);
-            stroke: #E5E5EA;
-            stroke-width: 2px;
-            rx: 16;
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.02));
-        }
-
-        .node-group { cursor: pointer; }
-        .node-group:hover .node-rect {
-            transform: translateY(-4px);
-            filter: drop-shadow(0 12px 20px rgba(0,0,0,0.1));
-            stroke: var(--accent-science);
-        }
-
-        /* Specific Node Colors */
-        .type-root .node-rect { stroke: #1D1D1F; stroke-width: 3px; }
-        .type-myth .node-rect { stroke: var(--accent-myth); stroke-dasharray: 4; }
-        .type-science .node-rect { stroke: var(--accent-science); }
-        .type-chemical .node-rect { fill: #E8F2FF; stroke: var(--accent-science); }
-
-        .node-text {
-            font-size: 14px;
-            font-weight: 600;
-            fill: var(--text-primary);
-            text-anchor: middle;
-            pointer-events: none;
-            font-family: var(--font-stack);
-        }
-        
-        .node-subtext {
-            font-size: 10px;
-            fill: var(--text-secondary);
-            text-anchor: middle;
-            pointer-events: none;
-        }
-
-        /* Edges */
-        .edge-path {
-            fill: none;
-            stroke: #C7C7CC;
-            stroke-width: 2px;
-            stroke-linecap: round;
-        }
-
-        /* Interactive Detail Panel (Bottom) */
-        .detail-panel {
-            position: absolute;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 90%;
-            max-width: 800px;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(16px);
-            padding: 24px;
-            border-radius: 24px;
-            box-shadow: var(--shadow-hover);
-            border: 1px solid rgba(0,0,0,0.05);
+            font-family: 'Segoe UI', Roboto, Helvetica, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-dark);
             display: flex;
-            gap: 24px;
-            z-index: 100;
-            transition: opacity 0.3s;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow: hidden;
         }
 
-        .panel-content { flex: 1; }
-        .panel-title { 
-            font-size: 14px; 
-            text-transform: uppercase; 
-            letter-spacing: 1px; 
-            color: var(--accent-science); 
-            font-weight: 700; 
-            margin-bottom: 8px;
-            display: flex; align-items: center; gap: 8px;
+        /* Container Utama */
+        .container {
+            width: 90%;
+            max-width: 500px;
+            perspective: 1000px;
         }
-        .panel-body { font-size: 15px; line-height: 1.6; color: #333; }
+
+        /* Kartu */
+        .card-wrapper {
+            position: relative;
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 40px 30px;
+            text-align: center;
+            transition: transform 0.5s ease, opacity 0.5s ease;
+            min-height: 450px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* Header Visual */
+        .icon-box {
+            width: 80px;
+            height: 80px;
+            background: #EBF5FF;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 40px;
+        }
+
+        h2 { margin: 0 0 10px; color: var(--text-dark); font-size: 24px; }
+        h4 { margin: 0 0 20px; color: var(--primary); font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* Konten Teks */
+        .content p {
+            font-size: 16px;
+            line-height: 1.6;
+            color: var(--text-light);
+            margin-bottom: 20px;
+        }
+
+        .analogy-box {
+            background: #FAFAFA;
+            border-left: 4px solid var(--accent);
+            padding: 15px;
+            text-align: left;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
         
-        /* Highlight text in panel */
-        .highlight { background: #E8F2FF; color: #0071E3; padding: 2px 6px; border-radius: 4px; font-weight: 600; }
-        .myth-hl { background: #FFF0F0; color: #FF3B30; padding: 2px 6px; border-radius: 4px; font-weight: 600; }
+        .analogy-title {
+            font-weight: bold;
+            font-size: 12px;
+            color: var(--accent);
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        /* Navigasi Dots */
+        .dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .dot {
+            width: 10px;
+            height: 10px;
+            background: #DCE1E6;
+            border-radius: 50%;
+            transition: 0.3s;
+        }
+        
+        .dot.active { background: var(--primary); transform: scale(1.2); }
+
+        /* Tombol */
+        .btn-group {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        button {
+            border: none;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 14px;
+        }
+
+        .btn-next { background: var(--primary); color: white; flex: 2; }
+        .btn-next:hover { background: #357ABD; box-shadow: 0 5px 15px rgba(74, 144, 226, 0.3); }
+        
+        .btn-prev { background: white; color: var(--text-light); border: 1px solid #DCE1E6; flex: 1; }
+        .btn-prev:hover { background: #F8F9FA; }
+        .btn-prev:disabled { opacity: 0.3; cursor: not-allowed; }
+
+        /* Animations */
+        .fade-in { animation: fadeIn 0.5s forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
     </style>
 </head>
 <body>
 
-    <div id="canvas-container">
-        <div class="header-float">
-            <h1>Anatomi Kesurupan</h1>
-            <p>Berdasarkan Penjelasan Dr. Ryu Hasan (Neurosains)</p>
+<div class="container">
+    <div class="card-wrapper" id="cardPanel">
         </div>
-
-        <svg id="mainSvg"></svg>
-    </div>
-
-    <div class="detail-panel">
-        <div class="panel-content">
-            <div class="panel-title">
-                <span style="font-size:18px">🧠</span> SINTESIS ILMIAH
-            </div>
-            <div class="panel-body">
-                Secara medis, kesurupan dikenal sebagai <strong>Dissociative Trance Disorder (DTD)</strong>. Ini bukan gangguan mistis, melainkan mekanisme otak yang mengalami "banjir" kimiawi <span class="highlight">Dopamin</span> (rasa nikmat) & <span class="highlight">Oksitosin</span> (rasa nyaman/adiksi). <br><br>
-                Otak menggunakan memori yang tersimpan (hantu lokal) sebagai "skrip" untuk mendapatkan perhatian (<em>Secondary Gain</em>) atau istirahat mental (<em>Primary Gain</em>).
-            </div>
-        </div>
-    </div>
+</div>
 
 <script>
-    // --- 1. DATA LOGIC STRUKTUR ---
-    // Kita memetakan penjelasan video menjadi Node dan Edge
-    const data = {
-        nodes: [
-            { id: "ROOT", label: "FENOMENA 'KESURUPAN'", sub: "Apa yang terjadi?", type: "root", x: 600, y: 100 },
-            
-            // Cabang Kiri: Mitos (Apa yang orang awam pikirkan)
-            { id: "MYTH_1", label: "Pandangan Mistik", sub: "Hantu/Roh Jahat", type: "myth", x: 300, y: 250 },
-            { id: "MYTH_2", label: "Solusi: Dukun/Rukyah", sub: "Pengusiran Roh", type: "myth", x: 300, y: 400 },
-            { id: "MYTH_3", label: "Efek: Sembuh Semu", sub: "Sugesti sementara", type: "myth", x: 300, y: 550 },
+    // --- DATABASE KONTEN (LOGIKA RUNTUT) ---
+    const steps = [
+        {
+            icon: "🤔",
+            category: "Langkah 1: Fenomena",
+            title: "Apa Itu Kesurupan?",
+            text: "Secara medis, ini disebut <strong>Dissociative Trance Disorder (DTD)</strong>. Bukan roh jahat yang masuk, tapi kesadaran yang 'bergeser' sementara.",
+            analogy: "Analogi HP: <br>Ini bukan 'Virus' yang masuk dari luar, tapi HP sedang membuka aplikasi berat (Mode Game/Fokus) sehingga aplikasi lain (kesadaran) tertutup sementara."
+        },
+        {
+            icon: "📂",
+            category: "Langkah 2: Database Memori",
+            title: "Kenapa Hantunya Lokal?",
+            text: "Otak hanya bisa memunculkan apa yang tersimpan di memori. Orang Jawa kesurupan Macan Putih, Orang Inggris kesurupan Vampir. Tidak pernah tertukar.",
+            analogy: "Analogi Folder File: <br>Anda tidak bisa membuka file yang belum pernah Anda download. Otak hanya memutar ulang 'File Audio/Video' yang sudah ada di hard disk (ingatan) Anda."
+        },
+        {
+            icon: "🧪",
+            category: "Langkah 3: Zat Kimia Otak",
+            title: "Kenapa Ketagihan?",
+            text: "Saat kesurupan, otak dibanjiri <strong>Dopamin</strong> (Rasa Nikmat) dan <strong>Oksitosin</strong> (Rasa Nyaman). Ini membuat tubuh rileks luar biasa setelahnya.",
+            analogy: "Analogi Narkoba Alami: <br>Otak memberikan 'hadiah' zat kimia yang memabukkan. Rasanya seperti baru selesai pijat refleksi atau olahraga berat (runner's high). Nyaman!"
+        },
+        {
+            icon: "🎭",
+            category: "Langkah 4: Motif Bawah Sadar",
+            title: "Untuk Apa Kesurupan?",
+            text: "Ada keuntungan tersembunyi: <strong>Primary Gain</strong> (Istirahat dari stres) dan <strong>Secondary Gain</strong> (Dapat perhatian/kasih sayang).",
+            analogy: "Analogi Aktor: <br>Anak pemalu yang tidak diperhatikan, tiba-tiba menjadi 'Pusat Perhatian' di panggung saat kesurupan. Bawah sadar berkata: 'Cara ini berhasil!'"
+        },
+        {
+            icon: "💊",
+            category: "Langkah 5: Solusi Medis",
+            title: "Bagaimana Mengobatinya?",
+            text: "Karena ini mekanisme mencari perhatian (bawah sadar), cara terbaik adalah: <strong>Jangan diberi panggung</strong>. Abaikan atau tinggalkan.",
+            analogy: "Analogi Sinyal: <br>Jika Anda berhenti memberi 'Like' dan 'Komentar' pada postingan caper, orang itu akan berhenti posting. Putus siklus 'Hadiah'-nya."
+        }
+    ];
 
-            // Cabang Kanan: Sains (Penjelasan Dr. Ryu)
-            { id: "SCI_1", label: "Medical View", sub: "Dissociative Trance Disorder", type: "science", x: 900, y: 250 },
-            
-            // Mekanisme Otak
-            { id: "MECH_1", label: "Pemicu", sub: "Stres / Butuh Perhatian (Bawah Sadar)", type: "science", x: 750, y: 380 },
-            { id: "MECH_2", label: "Proses Otak", sub: "Banjir Neurotransmitter", type: "chemical", x: 1050, y: 380 },
-            
-            // Detail Kimia Otak
-            { id: "CHEM_1", label: "Dopamin ⬆", sub: "Rasa Senang/Nikmat", type: "chemical", x: 950, y: 500 },
-            { id: "CHEM_2", label: "Oksitosin ⬆", sub: "Rasa Nyaman/Adiksi", type: "chemical", x: 1150, y: 500 },
+    let currentStep = 0;
 
-            // Peran Memori
-            { id: "MEM_1", label: "Peran Memori", sub: "Hanya kesurupan yg dikenal", type: "science", x: 900, y: 620 },
+    // --- RENDER ENGINE ---
+    const cardPanel = document.getElementById('cardPanel');
 
-            // Solusi Medis
-            { id: "SOL_1", label: "Solusi Efektif", sub: "Abaikan (Stop Caper)", type: "science", x: 900, y: 750 }
-        ],
-        edges: [
-            { from: "ROOT", to: "MYTH_1" },
-            { from: "MYTH_1", to: "MYTH_2" },
-            { from: "MYTH_2", to: "MYTH_3" },
-            
-            { from: "ROOT", to: "SCI_1" },
-            { from: "SCI_1", to: "MECH_1" },
-            { from: "SCI_1", to: "MECH_2" },
-            
-            { from: "MECH_2", to: "CHEM_1" },
-            { from: "MECH_2", to: "CHEM_2" },
-            
-            { from: "MECH_2", to: "MEM_1" }, /* Koneksi Kimia ke Memori */
-            { from: "MEM_1", to: "SOL_1" }
-        ]
-    };
-
-    // --- 2. RENDER ENGINE (Canvas Mode) ---
-    const svg = document.getElementById('mainSvg');
-    const container = document.getElementById('canvas-container');
-    
-    // Konfigurasi Ukuran Node
-    const nodeW = 220;
-    const nodeH = 60;
-
-    function render() {
-        svg.innerHTML = ''; // Clear canvas
+    function renderCard() {
+        const data = steps[currentStep];
         
-        // Agar diagram berada di tengah secara default
-        // Kita geser semua node agar center diagram ~ center layar
-        const offsetX = (window.innerWidth / 2) - 600; 
-        const offsetY = 50;
+        // Reset Animasi
+        cardPanel.classList.remove('fade-in');
+        void cardPanel.offsetWidth; // Trigger reflow
+        cardPanel.classList.add('fade-in');
 
-        // 1. Gambar Garis (Edges) - Di belakang node
-        data.edges.forEach(edge => {
-            const start = data.nodes.find(n => n.id === edge.from);
-            const end = data.nodes.find(n => n.id === edge.to);
+        cardPanel.innerHTML = `
+            <div>
+                <div class="icon-box">${data.icon}</div>
+                <h4>${data.category}</h4>
+                <h2>${data.title}</h2>
+                <div class="content">
+                    <p>${data.text}</p>
+                    <div class="analogy-box">
+                        <span class="analogy-title">💡 LOGIKA SEDERHANA:</span>
+                        ${data.analogy}
+                    </div>
+                </div>
+            </div>
 
-            if (start && end) {
-                const sx = start.x + offsetX;
-                const sy = start.y + offsetY + (nodeH/2);
-                const tx = end.x + offsetX;
-                const ty = end.y + offsetY - (nodeH/2);
-
-                const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-                
-                // Kurva Bezier Halus
-                const cY = (ty - sy) / 2;
-                const d = `M ${sx} ${sy + (nodeH/2)} C ${sx} ${sy + (nodeH/2) + cY}, ${tx} ${ty - (nodeH/2) - cY}, ${tx} ${ty - (nodeH/2)}`;
-                
-                // Straight line style for simplicity in vertical flow
-                // Or Curved:
-                const dCurve = `M ${sx + nodeW/2} ${sy + nodeH/2} L ${tx + nodeW/2} ${ty - nodeH/2}`; 
-                
-                // Custom path logic for cleaner tree
-                const p1x = start.x + offsetX + nodeW/2;
-                const p1y = start.y + offsetY + nodeH;
-                const p2x = end.x + offsetX + nodeW/2;
-                const p2y = end.y + offsetY;
-                
-                const curveStr = `M ${p1x} ${p1y} C ${p1x} ${p1y + 60}, ${p2x} ${p2y - 60}, ${p2x} ${p2y}`;
-
-                path.setAttribute("d", curveStr);
-                path.setAttribute("class", "edge-path");
-                svg.appendChild(path);
-            }
-        });
-
-        // 2. Gambar Node (Nodes)
-        data.nodes.forEach(node => {
-            const group = document.createElementNS("http://www.w3.org/2000/svg", "g");
-            group.setAttribute("class", `node-group type-${node.type}`);
-            
-            const x = node.x + offsetX;
-            const y = node.y + offsetY;
-
-            // Rectangle
-            const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-            rect.setAttribute("x", x);
-            rect.setAttribute("y", y);
-            rect.setAttribute("width", nodeW);
-            rect.setAttribute("height", nodeH);
-            rect.setAttribute("class", "node-rect");
-
-            // Main Label
-            const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-            text.setAttribute("x", x + nodeW/2);
-            text.setAttribute("y", y + 25);
-            text.setAttribute("class", "node-text");
-            text.textContent = node.label;
-
-            // Sub Label
-            const subtext = document.createElementNS("http://www.w3.org/2000/svg", "text");
-            subtext.setAttribute("x", x + nodeW/2);
-            subtext.setAttribute("y", y + 45);
-            subtext.setAttribute("class", "node-subtext");
-            subtext.textContent = node.sub;
-
-            group.appendChild(rect);
-            group.appendChild(text);
-            group.appendChild(subtext);
-            svg.appendChild(group);
-        });
-
-        // Set SVG size agar bisa discroll jika konten besar
-        svg.setAttribute("width", 2000); 
-        svg.setAttribute("height", 1200);
+            <div>
+                <div class="dots">
+                    ${steps.map((_, i) => `<div class="dot ${i === currentStep ? 'active' : ''}"></div>`).join('')}
+                </div>
+                <div class="btn-group">
+                    <button class="btn-prev" onclick="prevStep()" ${currentStep === 0 ? 'disabled' : ''}>Kembali</button>
+                    <button class="btn-next" onclick="nextStep()">
+                        ${currentStep === steps.length - 1 ? 'Selesai (Ulang)' : 'Lanjut →'}
+                    </button>
+                </div>
+            </div>
+        `;
     }
 
-    // Initial Render
-    render();
-    
-    // Responsive Redraw
-    window.addEventListener('resize', render);
+    function nextStep() {
+        if (currentStep < steps.length - 1) {
+            currentStep++;
+        } else {
+            currentStep = 0; // Loop back
+        }
+        renderCard();
+    }
 
-    // Fitur Drag/Scroll sederhana (Mouse drag to scroll)
-    let isDown = false;
-    let startX;
-    let scrollLeft;
-    let startY;
-    let scrollTop;
+    function prevStep() {
+        if (currentStep > 0) {
+            currentStep--;
+            renderCard();
+        }
+    }
 
-    container.addEventListener('mousedown', (e) => {
-        isDown = true;
-        container.classList.add('active');
-        startX = e.pageX - container.offsetLeft;
-        scrollLeft = container.scrollLeft;
-        startY = e.pageY - container.offsetTop;
-        scrollTop = container.scrollTop;
-    });
-    container.addEventListener('mouseleave', () => { isDown = false; });
-    container.addEventListener('mouseup', () => { isDown = false; });
-    container.addEventListener('mousemove', (e) => {
-        if (!isDown) return;
-        e.preventDefault();
-        const x = e.pageX - container.offsetLeft;
-        const walkX = (x - startX) * 1.5; 
-        container.scrollLeft = scrollLeft - walkX;
-        
-        const y = e.pageY - container.offsetTop;
-        const walkY = (y - startY) * 1.5;
-        container.scrollTop = scrollTop - walkY;
-    });
+    // Init First Render
+    renderCard();
 
 </script>
 
