@@ -1,68 +1,60 @@
 // Database Konten
 const contentData = {
     "start": {
-        icon: "🎬",
-        category: "LANGKAH 1: OBSERVASI",
+        category: "01. OBSERVASI",
         title: "Fenomena Kesurupan",
-        text: "Seseorang tiba-tiba berperilaku aneh, suara berubah, tenaga menjadi kuat, dan mengaku sebagai entitas lain (harimau, leluhur, dll). Ini adalah titik awal pengamatan.",
-        analogy: "Seperti HP yang tiba-tiba 'Freeze' atau membuka aplikasi sendiri. Kita melihat layarnya aneh, tapi belum tahu sebabnya (Hardware rusak atau Software crash?).",
-        caseStudy: "Sering terjadi saat upacara bendera, kemah, atau situasi di bawah tekanan sosial yang tinggi."
+        text: "Seseorang tiba-tiba berperilaku aneh, suara berubah, tenaga menjadi kuat, dan mengaku sebagai entitas lain. Secara neurosains, ini adalah fenomena <strong>Disosiasi Kesadaran</strong>.",
+        analogy: "Smartphone 'Freeze'. Layar error bukan berarti hardware rusak, bisa jadi software crash.",
+        caseStudy: "Umum terjadi pada situasi tekanan sosial tinggi (upacara, kemah) di mana ambang batas stres terlampaui."
     },
     "decision": {
-        icon: "⚖️",
-        category: "LANGKAH 2: ALAT VERIFIKASI",
-        title: "Pilih Kacamata Analisis",
-        text: "Kita dihadapkan pada dua pilihan cara pandang. Apakah kita menggunakan instrumen ilmiah (EEG, Psikologi) atau hanya mengandalkan cerita turun-temurun (Testimoni)?",
-        analogy: "Mobil mogok: Apakah dibawa ke bengkel resmi untuk scan komputer (Sains), atau panggil orang pintar untuk meniup kap mesin (Mistik)?",
-        caseStudy: "Dr. Ryu menegaskan: Dokter bekerja berdasarkan pedoman medis (PPDGJ), bukan primbon."
+        category: "02. METODOLOGI",
+        title: "Pemilihan Instrumen",
+        text: "Pencarian kebenaran membutuhkan instrumen yang terkalibrasi. Kita harus memilih: Validasi Objektif (Data) atau Validasi Subjektif (Testimoni).",
+        analogy: "Mobil Mogok: Dibawa ke bengkel resmi (Scan ECU) vs Panggil 'Orang Pintar' tiup kap mesin.",
+        caseStudy: "PPDGJ (Pedoman Penggolongan Diagnosis Gangguan Jiwa) vs Primbon."
     },
     "mistik": {
-        icon: "👻",
-        category: "JALUR A (FALSE)",
+        category: "JALUR BIAS (FALLACY)",
         title: "Atribusi Mistik",
-        text: "Jika alat ilmiah TIDAK digunakan, otak manusia secara default akan mencari penjelasan termudah: 'Ini pasti kerjaan roh halus'. Ini adalah jalan pintas kognitif.",
-        analogy: "Zaman purba: Petir menyambar karena Dewa Thor marah. (Padahal itu listrik statis). Ketidaktahuan melahirkan mitos.",
-        caseStudy: "Dulu epilepsi dianggap kerasukan setan. Sekarang kita tahu itu badai listrik di otak."
+        text: "Jalan pintas kognitif (Heuristik). Ketika otak tidak menemukan penjelasan logis yang cepat, ia mengisi kekosongan data dengan mitos budaya.",
+        analogy: "God of the Gaps: Dulu petir dianggap kemarahan Zeus karena listrik statis belum ditemukan.",
+        caseStudy: "Dulu Epilepsi dianggap kerasukan setan, kini bisa diobati dengan obat antikonvulsan."
     },
     "dukun": {
-        icon: "🔮",
-        category: "OUTPUT JALUR A",
-        title: "Solusi: Dukun & Sugesti",
-        text: "Pengobatan berupa mantra atau rukyah. Kadang berhasil sembuh, tapi itu seringkali adalah efek Sugesti/Placebo atau siklus alami penyakit yang memang sudah waktunya berhenti.",
-        analogy: "Memukul TV rusak sampai nyala lagi. Kadang berhasil karena konektor terguncang, tapi tidak memperbaiki sirkuit yang rusak.",
-        caseStudy: "Kasus 'Begu Ganjang' atau 'Koro'. Penanganan mistik seringkali hanya menenangkan sementara."
+        category: "OUTCOME JALUR A",
+        title: "Efek Placebo",
+        text: "Intervensi ritual kadang berhasil bukan karena kekuatan supranatural, melainkan manipulasi psikologis (Sugesti) dan siklus alami penyakit.",
+        analogy: "Memukul TV Rusak: Kadang menyala kembali karena guncangan, bukan karena perbaikan sirkuit yang benar.",
+        caseStudy: "Fenomena 'Begu Ganjang'. Penanganan mistik hanya menenangkan gejala (simtomatik), tidak menyembuhkan akar masalah."
     },
     "sains": {
-        icon: "🏥",
-        category: "JALUR B (TRUE)",
-        title: "Diagnosis Medis: DTD",
-        text: "Secara medis, ini adalah <strong>Dissociative Trance Disorder (DTD)</strong>. Bukan roh yang masuk, tapi kesadaran utama yang 'bergeser' atau tertidur sementara.",
-        analogy: "Mode 'Airplane' di HP. HP-nya menyala, mesin jalan, tapi fungsi komunikasi utamanya mati sementara.",
-        caseStudy: "Tercatat dalam klasifikasi penyakit internasional (ICD-10) dan PPDGJ."
+        category: "DIAGNOSIS KLINIS",
+        title: "Dissociative Trance Disorder",
+        text: "Dalam ICD-10 (F44.3), ini adalah gangguan trans disosiatif. Kesadaran utama 'tertidur' (inhibit), sementara alam bawah sadar mengambil alih motorik.",
+        analogy: "Mode Airplane: Mesin HP hidup, layar menyala, tapi fungsi komunikasi utama non-aktif.",
+        caseStudy: "Pasien tidak akan merespon panggilan nama aslinya, karena 'File' identitas diri sedang tidak diakses oleh RAM otak."
     },
     "kimia": {
-        icon: "🧪",
-        category: "MEKANISME BIOLOGIS",
-        title: "Banjir Kimia Otak",
-        text: "Saat kesurupan, otak memproduksi <strong>Dopamin</strong> (Nikmat) dan <strong>Oksitosin</strong> (Nyaman) berlebihan. Pelaku merasa 'Nge-fly' dan rileks.",
-        analogy: "Narkoba Alami. Tubuh memproduksi zat mirip morfin. Makanya orang kesurupan merasa enteng dan kadang ketagihan.",
-        caseStudy: "Sensasi ini mirip dengan 'Runner's High' setelah lari maraton atau orgasme."
+        category: "MEKANISME NEUROBIOLOGI",
+        title: "Neurotransmitter Flood",
+        text: "Otak membanjiri sistem saraf dengan <strong>Endorfin, Dopamin, dan Oksitosin</strong>. Ini menciptakan sensasi euforia (Nge-fly) dan bebas rasa sakit.",
+        analogy: "Narkoba Endogen: Tubuh memproduksi zat mirip morfin sendiri. Pelaku merasa sangat ringan dan kuat.",
+        caseStudy: "Mirip 'Runner's High' pada pelari maraton atau sensasi ekstase saat ritual keagamaan intens."
     },
     "memori": {
-        icon: "💾",
-        category: "SUMBER DATA",
-        title: "Database Memori",
-        text: "Otak hanya bisa memutar 'skrip' yang pernah direkam. Hantu yang muncul selalu sesuai budaya setempat.",
-        analogy: "Hard Disk. Anda tidak bisa memutar file film yang belum didownload. Orang Jawa tidak akan kesurupan Drakula.",
-        caseStudy: "Orang Inggris kesurupan Vampir, orang Indonesia kesurupan Pocong/Macan. Tidak pernah tertukar."
+        category: "DATABASE MEMORI",
+        title: "Cultural Bound Syndrome",
+        text: "Isi kesurupan selalu terikat budaya. Otak hanya bisa memproyeksikan data yang sudah tersimpan di Hippocampus.",
+        analogy: "Media Player: Anda tidak bisa memutar lagu yang belum pernah di-download.",
+        caseStudy: "Orang Eropa kesurupan Vampir/Alien. Orang Indonesia kesurupan Pocong/Macan. Tidak pernah tertukar."
     },
     "solusi": {
-        icon: "✅",
-        category: "SOLUSI AKHIR",
-        title: "Putus Siklusnya",
-        text: "Kesurupan seringkali punya motif bawah sadar mencari perhatian (Secondary Gain). Solusinya: Jangan diberi panggung.",
-        analogy: "Algoritma Medsos: Jika postingan 'Caper' tidak ada yang Like, orangnya malas posting. Jika kesurupan dicuekin, dia bangun sendiri.",
-        caseStudy: "Saran Dr. Ryu: Tinggalkan saja, jangan dikerumuni. Nanti bangun sendiri karena 'malu' atau bosan."
+        category: "REKOMENDASI KLINIS",
+        title: "Extinction Strategy",
+        text: "Memutus rantai <em>Secondary Gain</em> (keuntungan terselubung mencari perhatian). Jika tidak ada audiens, pertunjukan berhenti.",
+        analogy: "Algoritma Medsos: Konten yang tidak dapat 'Like' (Atensi) akan berhenti diposting oleh kreatornya.",
+        caseStudy: "Isolasi pasien di ruang tenang. Tanpa penonton, otak akan kembali ke mode sadar karena kelelahan atau bosan."
     }
 };
 
@@ -73,8 +65,18 @@ function selectNode(key, event) {
     if (!data) return;
 
     // 1. Update Konten Panel
-    document.getElementById('panelIcon').textContent = data.icon;
-    document.getElementById('panelCategory').textContent = data.category;
+    const catEl = document.getElementById('panelCategory');
+    catEl.textContent = data.category;
+    
+    // Ubah warna badge berdasarkan kategori
+    if(key === 'mistik' || key === 'dukun') {
+        catEl.style.color = '#BE123C'; catEl.style.background = '#FFF1F2';
+    } else if (key === 'start' || key === 'decision') {
+        catEl.style.color = '#1E293B'; catEl.style.background = '#F1F5F9';
+    } else {
+        catEl.style.color = '#0369A1'; catEl.style.background = '#F0F9FF';
+    }
+
     document.getElementById('panelTitle').textContent = data.title;
     document.getElementById('panelText').innerHTML = data.text;
     document.getElementById('panelAnalogy').textContent = data.analogy;
@@ -82,14 +84,14 @@ function selectNode(key, event) {
 
     // 2. Update Visual Active State
     document.querySelectorAll('.node-card').forEach(el => el.classList.remove('active'));
-    // Cari elemen yang diklik dan tambahkan class active
+    
     if(event && event.currentTarget) {
         event.currentTarget.classList.add('active');
     } else {
-        // Fallback untuk load awal
-        document.querySelector(`.node-card.${key}`).classList.add('active');
+        const defaultEl = document.querySelector(`.node-card.${key}`);
+        if(defaultEl) defaultEl.classList.add('active');
     }
 }
 
-// Load awal
+// Init
 selectNode('start', null);
