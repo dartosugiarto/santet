@@ -3,15 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Logic Extraction: Canvas Mode</title>
+    <title>Kesurupan: Neurosains vs Mitos</title>
     <style>
         :root {
             --bg-canvas: #F5F5F7;
             --text-primary: #1D1D1F;
-            --accent-color: #0071E3;
-            --border-color: #E5E5EA;
-            --shadow-float: 0 8px 32px rgba(0, 0, 0, 0.08);
-            --font-stack: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+            --text-secondary: #86868B;
+            --accent-science: #0071E3; /* Biru untuk Sains */
+            --accent-myth: #FF3B30;    /* Merah untuk Mitos */
+            --node-bg: #FFFFFF;
+            --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.05);
+            --shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.1);
+            --font-stack: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, sans-serif;
         }
 
         body {
@@ -20,284 +23,330 @@
             font-family: var(--font-stack);
             background-color: var(--bg-canvas);
             color: var(--text-primary);
-            overflow-x: hidden;
+            overflow: hidden; /* Canvas mode */
         }
 
         /* --- 1. INFINITE CANVAS AREA --- */
         #canvas-container {
             position: relative;
             width: 100vw;
-            height: 75vh; /* Mengambil 75% tinggi layar */
-            background-image: 
-                radial-gradient(#C7C7CC 1.5px, transparent 1.5px);
+            height: 100vh;
+            background-image: radial-gradient(#D2D2D7 1.5px, transparent 1.5px);
             background-size: 24px 24px;
-            background-color: var(--bg-canvas);
-            overflow: auto;
             cursor: grab;
-            border-bottom: 1px solid var(--border-color);
+            overflow: hidden; /* Kita akan implementasi pan/zoom sederhana */
         }
 
         #canvas-container:active { cursor: grabbing; }
 
-        svg {
-            display: block;
-            min-width: 100%; 
-            min-height: 100%;
-        }
-
-        /* Header Melayang */
-        .floating-header {
+        /* Floating Header */
+        .header-float {
             position: absolute;
             top: 24px;
             left: 50%;
             transform: translateX(-50%);
             background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px);
-            padding: 10px 24px;
-            border-radius: 50px;
-            box-shadow: var(--shadow-float);
-            border: 1px solid rgba(0,0,0,0.05);
+            backdrop-filter: blur(12px);
+            padding: 12px 32px;
+            border-radius: 40px;
+            box-shadow: var(--shadow-soft);
             text-align: center;
             z-index: 100;
+            border: 1px solid rgba(0,0,0,0.05);
             pointer-events: none;
         }
+        .header-float h1 { font-size: 18px; margin: 0; font-weight: 700; color: #111; }
+        .header-float p { font-size: 12px; margin: 4px 0 0; color: var(--text-secondary); }
 
-        .floating-header h1 { font-size: 16px; margin: 0; font-weight: 600; }
-        .floating-header p { font-size: 12px; margin: 2px 0 0 0; color: #86868B; }
+        /* SVG Diagram */
+        svg {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
 
-        /* --- 2. NODE STYLES --- */
+        /* Node Styles */
         .node-rect {
-            fill: #FFFFFF;
-            stroke: #D2D2D7;
+            fill: var(--node-bg);
+            stroke: #E5E5EA;
             stroke-width: 2px;
-            rx: 12;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.05));
+            rx: 16;
             transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.02));
         }
 
+        .node-group { cursor: pointer; }
         .node-group:hover .node-rect {
-            stroke: var(--accent-color);
-            transform: translateY(-2px);
-            filter: drop-shadow(0 8px 16px rgba(0,113,227,0.2));
+            transform: translateY(-4px);
+            filter: drop-shadow(0 12px 20px rgba(0,0,0,0.1));
+            stroke: var(--accent-science);
         }
+
+        /* Specific Node Colors */
+        .type-root .node-rect { stroke: #1D1D1F; stroke-width: 3px; }
+        .type-myth .node-rect { stroke: var(--accent-myth); stroke-dasharray: 4; }
+        .type-science .node-rect { stroke: var(--accent-science); }
+        .type-chemical .node-rect { fill: #E8F2FF; stroke: var(--accent-science); }
 
         .node-text {
-            font-size: 13px;
-            font-weight: 500;
+            font-size: 14px;
+            font-weight: 600;
             fill: var(--text-primary);
+            text-anchor: middle;
             pointer-events: none;
             font-family: var(--font-stack);
         }
+        
+        .node-subtext {
+            font-size: 10px;
+            fill: var(--text-secondary);
+            text-anchor: middle;
+            pointer-events: none;
+        }
 
+        /* Edges */
         .edge-path {
             fill: none;
-            stroke: #B0B0B5;
+            stroke: #C7C7CC;
             stroke-width: 2px;
             stroke-linecap: round;
         }
 
-        .edge-label-bg { fill: var(--bg-canvas); }
-        .edge-label {
-            font-size: 10px;
-            font-weight: 700;
-            fill: var(--accent-color);
-            text-transform: uppercase;
-        }
-
-        /* --- 3. PANEL BAWAH (Hanya Sintesis) --- */
-        .details-panel {
-            padding: 40px 20px;
+        /* Interactive Detail Panel (Bottom) */
+        .detail-panel {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 800px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(16px);
+            padding: 24px;
+            border-radius: 24px;
+            box-shadow: var(--shadow-hover);
+            border: 1px solid rgba(0,0,0,0.05);
             display: flex;
-            justify-content: center;
-            background: #fff;
-            min-height: 25vh; /* Sisa tinggi layar */
+            gap: 24px;
+            z-index: 100;
+            transition: opacity 0.3s;
         }
 
-        .synthesis-card {
-            max-width: 700px;
-            width: 100%;
-            text-align: center;
+        .panel-content { flex: 1; }
+        .panel-title { 
+            font-size: 14px; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+            color: var(--accent-science); 
+            font-weight: 700; 
+            margin-bottom: 8px;
+            display: flex; align-items: center; gap: 8px;
         }
+        .panel-body { font-size: 15px; line-height: 1.6; color: #333; }
         
-        .synthesis-card h2 {
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #86868B;
-            margin-bottom: 16px;
-        }
-
-        .synthesis-text {
-            font-size: 16px;
-            line-height: 1.6;
-            color: #1D1D1F;
-        }
+        /* Highlight text in panel */
+        .highlight { background: #E8F2FF; color: #0071E3; padding: 2px 6px; border-radius: 4px; font-weight: 600; }
+        .myth-hl { background: #FFF0F0; color: #FF3B30; padding: 2px 6px; border-radius: 4px; font-weight: 600; }
 
     </style>
 </head>
 <body>
 
     <div id="canvas-container">
-        <div class="floating-header">
-            <h1>Logic Structure</h1>
-            <p>Mysticism vs Science Analysis</p>
+        <div class="header-float">
+            <h1>Anatomi Kesurupan</h1>
+            <p>Berdasarkan Penjelasan Dr. Ryu Hasan (Neurosains)</p>
         </div>
-        <svg id="logicSvg"></svg>
+
+        <svg id="mainSvg"></svg>
     </div>
 
-    <div class="details-panel">
-        <div class="synthesis-card">
-            <h2>System Synthesis</h2>
-            <p class="synthesis-text">
-                Analisis logika menunjukkan bahwa atribusi fenomena fisik kepada <strong>"Mistika" (Santet)</strong> terjadi hanya ketika variabel <strong>Alat Ilmiah</strong> bernilai <em>FALSE</em>. <br><br>
-                Ketika instrumen verifikasi diterapkan (<em>TRUE</em>), entitas penyakit seperti Hemofilia dan Kusta teridentifikasi sebagai gangguan biologis, bukan anomali metafisik. Diagram ini memvalidasi transisi dari asumsi mistis menuju pembuktian empiris.
-            </p>
+    <div class="detail-panel">
+        <div class="panel-content">
+            <div class="panel-title">
+                <span style="font-size:18px">🧠</span> SINTESIS ILMIAH
+            </div>
+            <div class="panel-body">
+                Secara medis, kesurupan dikenal sebagai <strong>Dissociative Trance Disorder (DTD)</strong>. Ini bukan gangguan mistis, melainkan mekanisme otak yang mengalami "banjir" kimiawi <span class="highlight">Dopamin</span> (rasa nikmat) & <span class="highlight">Oksitosin</span> (rasa nyaman/adiksi). <br><br>
+                Otak menggunakan memori yang tersimpan (hantu lokal) sebagai "skrip" untuk mendapatkan perhatian (<em>Secondary Gain</em>) atau istirahat mental (<em>Primary Gain</em>).
+            </div>
         </div>
     </div>
 
 <script>
-    // DATA LOGIC (Internal Engine - Tidak Ditampilkan di UI)
-    const logicData = {
-        "nodes": [
-            {"id": "N0", "label": "START: Phenomenon", "level": 0},
-            {"id": "N1", "label": "? Scientific Tools Available", "level": 1, "type": "decision"},
+    // --- 1. DATA LOGIC STRUKTUR ---
+    // Kita memetakan penjelasan video menjadi Node dan Edge
+    const data = {
+        nodes: [
+            { id: "ROOT", label: "FENOMENA 'KESURUPAN'", sub: "Apa yang terjadi?", type: "root", x: 600, y: 100 },
             
-            // Kiri (Mistis)
-            {"id": "N2", "label": "Mystical Attribution", "level": 2},
-            {"id": "N3", "label": "OUTPUT: Santet Idea", "level": 3, "type": "end"},
+            // Cabang Kiri: Mitos (Apa yang orang awam pikirkan)
+            { id: "MYTH_1", label: "Pandangan Mistik", sub: "Hantu/Roh Jahat", type: "myth", x: 300, y: 250 },
+            { id: "MYTH_2", label: "Solusi: Dukun/Rukyah", sub: "Pengusiran Roh", type: "myth", x: 300, y: 400 },
+            { id: "MYTH_3", label: "Efek: Sembuh Semu", sub: "Sugesti sementara", type: "myth", x: 300, y: 550 },
 
-            // Kanan (Sains)
-            {"id": "N4", "label": "Empirical Investigation", "level": 2},
+            // Cabang Kanan: Sains (Penjelasan Dr. Ryu)
+            { id: "SCI_1", label: "Medical View", sub: "Dissociative Trance Disorder", type: "science", x: 900, y: 250 },
             
-            {"id": "N5", "label": "Bleeding Case", "level": 3},
-            {"id": "N6", "label": "Hemophilia", "level": 4, "type": "end"},
+            // Mekanisme Otak
+            { id: "MECH_1", label: "Pemicu", sub: "Stres / Butuh Perhatian (Bawah Sadar)", type: "science", x: 750, y: 380 },
+            { id: "MECH_2", label: "Proses Otak", sub: "Banjir Neurotransmitter", type: "chemical", x: 1050, y: 380 },
             
-            {"id": "N7", "label": "Skin Decay Case", "level": 3},
-            {"id": "N8", "label": "Leprosy (M. leprae)", "level": 4, "type": "end"},
-            
-            {"id": "N9", "label": "Supernatural Test", "level": 3},
-            {"id": "N10", "label": "CIA Stargate Project", "level": 4},
-            {"id": "N11", "label": "Coincidence (Stat)", "level": 5, "type": "end"}
+            // Detail Kimia Otak
+            { id: "CHEM_1", label: "Dopamin ⬆", sub: "Rasa Senang/Nikmat", type: "chemical", x: 950, y: 500 },
+            { id: "CHEM_2", label: "Oksitosin ⬆", sub: "Rasa Nyaman/Adiksi", type: "chemical", x: 1150, y: 500 },
+
+            // Peran Memori
+            { id: "MEM_1", label: "Peran Memori", sub: "Hanya kesurupan yg dikenal", type: "science", x: 900, y: 620 },
+
+            // Solusi Medis
+            { id: "SOL_1", label: "Solusi Efektif", sub: "Abaikan (Stop Caper)", type: "science", x: 900, y: 750 }
         ],
-        "edges": [
-            {"from": "N0", "to": "N1"},
-            {"from": "N1", "to": "N2", "label": "NO"},
-            {"from": "N2", "to": "N3"},
-            {"from": "N1", "to": "N4", "label": "YES"},
-            {"from": "N4", "to": "N5"}, {"from": "N5", "to": "N6"},
-            {"from": "N4", "to": "N7"}, {"from": "N7", "to": "N8"},
-            {"from": "N4", "to": "N9"}, {"from": "N9", "to": "N10"},
-            {"from": "N10", "to": "N11"}
+        edges: [
+            { from: "ROOT", to: "MYTH_1" },
+            { from: "MYTH_1", to: "MYTH_2" },
+            { from: "MYTH_2", to: "MYTH_3" },
+            
+            { from: "ROOT", to: "SCI_1" },
+            { from: "SCI_1", to: "MECH_1" },
+            { from: "SCI_1", to: "MECH_2" },
+            
+            { from: "MECH_2", to: "CHEM_1" },
+            { from: "MECH_2", to: "CHEM_2" },
+            
+            { from: "MECH_2", to: "MEM_1" }, /* Koneksi Kimia ke Memori */
+            { from: "MEM_1", to: "SOL_1" }
         ]
     };
 
-    // RENDERER LOGIC
+    // --- 2. RENDER ENGINE (Canvas Mode) ---
+    const svg = document.getElementById('mainSvg');
+    const container = document.getElementById('canvas-container');
+    
+    // Konfigurasi Ukuran Node
+    const nodeW = 220;
+    const nodeH = 60;
+
     function render() {
-        const container = document.getElementById('canvas-container');
-        const svg = document.getElementById('logicSvg');
+        svg.innerHTML = ''; // Clear canvas
         
-        // Lebar dinamis, minimal 1200px agar nyaman discroll
-        const width = Math.max(container.offsetWidth, 1200); 
-        const height = 650;
-        
-        svg.style.width = width + "px";
-        svg.style.height = height + "px";
-        svg.innerHTML = '';
+        // Agar diagram berada di tengah secara default
+        // Kita geser semua node agar center diagram ~ center layar
+        const offsetX = (window.innerWidth / 2) - 600; 
+        const offsetY = 50;
 
-        const levelY = 100;
-        const startY = 80;
-        const nodeW = 160;
-        const nodeH = 44;
+        // 1. Gambar Garis (Edges) - Di belakang node
+        data.edges.forEach(edge => {
+            const start = data.nodes.find(n => n.id === edge.from);
+            const end = data.nodes.find(n => n.id === edge.to);
 
-        // Grouping
-        const levels = {};
-        logicData.nodes.forEach(n => {
-            if(!levels[n.level]) levels[n.level] = [];
-            levels[n.level].push(n);
-        });
-
-        const pos = {};
-
-        // Calculate Position
-        Object.keys(levels).forEach(lvl => {
-            const nodes = levels[lvl];
-            const segment = width / (nodes.length + 1);
-            nodes.forEach((node, i) => {
-                pos[node.id] = {
-                    x: segment * (i + 1) - (nodeW/2),
-                    y: startY + (node.level * levelY)
-                };
-            });
-        });
-
-        // Draw Edges
-        logicData.edges.forEach(e => {
-            const s = pos[e.from];
-            const t = pos[e.to];
-            if(s && t) {
-                const sx = s.x + nodeW/2;
-                const sy = s.y + nodeH;
-                const tx = t.x + nodeW/2;
-                const ty = t.y;
+            if (start && end) {
+                const sx = start.x + offsetX;
+                const sy = start.y + offsetY + (nodeH/2);
+                const tx = end.x + offsetX;
+                const ty = end.y + offsetY - (nodeH/2);
 
                 const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                
+                // Kurva Bezier Halus
                 const cY = (ty - sy) / 2;
-                path.setAttribute("d", `M ${sx} ${sy} C ${sx} ${sy+cY}, ${tx} ${ty-cY}, ${tx} ${ty}`);
+                const d = `M ${sx} ${sy + (nodeH/2)} C ${sx} ${sy + (nodeH/2) + cY}, ${tx} ${ty - (nodeH/2) - cY}, ${tx} ${ty - (nodeH/2)}`;
+                
+                // Straight line style for simplicity in vertical flow
+                // Or Curved:
+                const dCurve = `M ${sx + nodeW/2} ${sy + nodeH/2} L ${tx + nodeW/2} ${ty - nodeH/2}`; 
+                
+                // Custom path logic for cleaner tree
+                const p1x = start.x + offsetX + nodeW/2;
+                const p1y = start.y + offsetY + nodeH;
+                const p2x = end.x + offsetX + nodeW/2;
+                const p2y = end.y + offsetY;
+                
+                const curveStr = `M ${p1x} ${p1y} C ${p1x} ${p1y + 60}, ${p2x} ${p2y - 60}, ${p2x} ${p2y}`;
+
+                path.setAttribute("d", curveStr);
                 path.setAttribute("class", "edge-path");
-                if(e.label === "NO") path.setAttribute("stroke-dasharray", "4"); 
                 svg.appendChild(path);
-
-                if(e.label) {
-                    const mx = (sx+tx)/2;
-                    const my = (sy+ty)/2;
-                    
-                    const bg = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-                    bg.setAttribute("x", mx - 15); bg.setAttribute("y", my - 8);
-                    bg.setAttribute("width", 30); bg.setAttribute("height", 16);
-                    bg.setAttribute("class", "edge-label-bg");
-                    svg.appendChild(bg);
-
-                    const txt = document.createElementNS("http://www.w3.org/2000/svg", "text");
-                    txt.setAttribute("x", mx); txt.setAttribute("y", my + 4);
-                    txt.setAttribute("text-anchor", "middle");
-                    txt.setAttribute("class", "edge-label");
-                    txt.textContent = e.label;
-                    svg.appendChild(txt);
-                }
             }
         });
 
-        // Draw Nodes
-        logicData.nodes.forEach(n => {
-            const p = pos[n.id];
-            const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
-            g.setAttribute("class", "node-group");
+        // 2. Gambar Node (Nodes)
+        data.nodes.forEach(node => {
+            const group = document.createElementNS("http://www.w3.org/2000/svg", "g");
+            group.setAttribute("class", `node-group type-${node.type}`);
             
+            const x = node.x + offsetX;
+            const y = node.y + offsetY;
+
+            // Rectangle
             const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-            rect.setAttribute("x", p.x); rect.setAttribute("y", p.y);
-            rect.setAttribute("width", nodeW); rect.setAttribute("height", nodeH);
+            rect.setAttribute("x", x);
+            rect.setAttribute("y", y);
+            rect.setAttribute("width", nodeW);
+            rect.setAttribute("height", nodeH);
             rect.setAttribute("class", "node-rect");
-            
-            // Style khusus
-            if(n.type === 'end') rect.style.stroke = "#34C759";
-            if(n.type === 'decision') rect.style.strokeDasharray = "4";
 
+            // Main Label
             const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-            text.setAttribute("x", p.x + nodeW/2);
-            text.setAttribute("y", p.y + nodeH/2 + 5);
-            text.setAttribute("text-anchor", "middle");
+            text.setAttribute("x", x + nodeW/2);
+            text.setAttribute("y", y + 25);
             text.setAttribute("class", "node-text");
-            text.textContent = n.label;
+            text.textContent = node.label;
 
-            g.appendChild(rect);
-            g.appendChild(text);
-            svg.appendChild(g);
+            // Sub Label
+            const subtext = document.createElementNS("http://www.w3.org/2000/svg", "text");
+            subtext.setAttribute("x", x + nodeW/2);
+            subtext.setAttribute("y", y + 45);
+            subtext.setAttribute("class", "node-subtext");
+            subtext.textContent = node.sub;
+
+            group.appendChild(rect);
+            group.appendChild(text);
+            group.appendChild(subtext);
+            svg.appendChild(group);
         });
+
+        // Set SVG size agar bisa discroll jika konten besar
+        svg.setAttribute("width", 2000); 
+        svg.setAttribute("height", 1200);
     }
 
+    // Initial Render
     render();
+    
+    // Responsive Redraw
     window.addEventListener('resize', render);
 
+    // Fitur Drag/Scroll sederhana (Mouse drag to scroll)
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+    let startY;
+    let scrollTop;
+
+    container.addEventListener('mousedown', (e) => {
+        isDown = true;
+        container.classList.add('active');
+        startX = e.pageX - container.offsetLeft;
+        scrollLeft = container.scrollLeft;
+        startY = e.pageY - container.offsetTop;
+        scrollTop = container.scrollTop;
+    });
+    container.addEventListener('mouseleave', () => { isDown = false; });
+    container.addEventListener('mouseup', () => { isDown = false; });
+    container.addEventListener('mousemove', (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - container.offsetLeft;
+        const walkX = (x - startX) * 1.5; 
+        container.scrollLeft = scrollLeft - walkX;
+        
+        const y = e.pageY - container.offsetTop;
+        const walkY = (y - startY) * 1.5;
+        container.scrollTop = scrollTop - walkY;
+    });
+
 </script>
+
 </body>
 </html>
