@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analisis Sistem: Logika Mistika vs Penjelasan Natural</title>
+    <style>
+        :root {
+            --bg-color: #fbfbfd;
+            --text-primary: #1d1d1f;
+            --text-secondary: #86868b;
+            --accent: #0071e3;
+            --border: #d2d2d7;
+            --card-bg: #ffffff;
+            --radius: 12px;
+            --font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-stack);
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+        }
+
+        header {
+            margin-bottom: 40px;
+            text-align: left;
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            letter-spacing: -0.015em;
+        }
+
+        p.subtitle {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        section {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 24px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            border: 1px solid rgba(0,0,0,0.05);
+            margin-bottom: 24px;
+        }
+
+        h2 {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        /* Diagram Logic Style */
+        .diagram-container {
+            overflow-x: auto;
+            font-family: "SF Mono", "Monaco", "Inconsolata", "Fira Mono", "Droid Sans Mono", "Source Code Pro", monospace;
+            font-size: 12px;
+            line-height: 1.4;
+            color: #333;
+            background-color: #f5f5f7;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        pre {
+            margin: 0;
+        }
+
+        /* Explanation Text */
+        .explanation-text {
+            font-size: 16px;
+            color: var(--text-primary);
+            font-weight: 400;
+            text-align: justify;
+        }
+
+        /* Canvas Area */
+        .canvas-wrapper {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            cursor: crosshair;
+            overflow: hidden;
+        }
+
+        canvas {
+            display: block;
+        }
+
+        .canvas-controls {
+            margin-top: 10px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        button {
+            background: none;
+            border: 1px solid var(--border);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            color: var(--text-primary);
+            transition: all 0.2s;
+        }
+
+        button:hover {
+            background: #f5f5f7;
+            border-color: #999;
+        }
+
+        button.clear-btn {
+            color: #ff3b30;
+            border-color: rgba(255, 59, 48, 0.3);
+        }
+        
+        button.clear-btn:hover {
+            background: rgba(255, 59, 48, 0.05);
+            border-color: #ff3b30;
+        }
+
+        footer {
+            margin-top: 40px;
+            border-top: 1px solid var(--border);
+            padding-top: 20px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            body { padding: 20px; }
+            h1 { font-size: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Analisis Logika: Fenomena vs Pengetahuan</h1>
+            <p class="subtitle">Berdasarkan data input video: Buta Karena "Santet"? Ada Penjelasan Ilmiahnya! (Malaka Project)</p>
+        </header>
+
+        <section>
+            <h2>Diagram Logika Struktural</h2>
+            <div class="diagram-container">
+<pre>
+START [Input: Fenomena Tidak Terjelaskan]
+  │
+  ▼
+[Proses: Evaluasi Ketersediaan Data/Teknologi]
+  │
+  ├── KONDISI 1: Teknologi/Sains BELUM MEMADAI (Masa Lalu/Minim Literasi)
+  │    │
+  │    ▼
+  │  [Keputusan: Atribusi ke "Logika Mistika"]
+  │    │
+  │    ├── Kasus: Pendarahan Tak Henti ──> Output: "Santet/Kutukan"
+  │    ├── Kasus: Luka Kulit/Isolasi ──> Output: "Guna-guna"
+  │    └── Kasus: Wabah Massal ──> Output: "Tulah/Karma"
+  │    │
+  │    ▼
+  │  [Status: Bias Kognitif / Selesai Tanpa Solusi]
+  │
+  └── KONDISI 2: Teknologi/Sains MEMADAI (Modern/Berpikir Kritis)
+       │
+       ▼
+     [Proses: Investigasi Empiris & Identifikasi Pola]
+       │
+       ├── Uji Medis: Pendarahan ──> [Identifikasi: Hemofilia / Genetika]
+       ├── Uji Mikrobiologi: Luka ──> [Identifikasi: Mycobacterium leprae / Kusta]
+       ├── Uji Epidemiologi: Wabah ──> [Identifikasi: Yersinia pestis / Black Death]
+       └── Uji Terkontrol (Stargate CIA): Klaim Supranatural ──> [Hasil: Gagal Replikasi / Kebetulan]
+       │
+       ▼
+     [Keputusan: Penjelasan Natural Valid]
+       │
+       ▼
+END [Output: Referensi Diperkaya & Pola Pikir Sehat]
+</pre>
+            </div>
+        </section>
+
+        <section>
+            <h2>Sintesis Analitik</h2>
+            <p class="explanation-text">
+                Fenomena yang secara historis diklasifikasikan sebagai kejadian supranatural (santet, kutukan) merupakan konsekuensi dari ketiadaan instrumen deteksi mikroba dan genetika pada masa lampau. Penyakit seperti hemofilia, kusta, dan wabah pes (Black Death) kini telah teridentifikasi memiliki etiologi biologis yang jelas, yakni mutasi genetik dan infeksi patogen (bakteri/virus), bukan intervensi metafisik. Pengujian empiris terhadap klaim kemampuan paranormal, seperti Project Stargate oleh CIA, secara konsisten gagal menghasilkan data yang dapat direplikasi atau digunakan secara strategis. Oleh karena itu, pendekatan rasional menuntut substitusi "logika mistika" dengan investigasi berbasis bukti untuk memahami anomali peristiwa.
+            </p>
+        </section>
+
+        <section>
+            <h2>Canvas Catatan (Raw Input)</h2>
+            <div class="canvas-wrapper" id="canvasContainer">
+                <canvas id="drawingCanvas"></canvas>
+            </div>
+            <div class="canvas-controls">
+                <button onclick="downloadCanvas()">Simpan Gambar</button>
+                <button class="clear-btn" onclick="clearCanvas()">Hapus</button>
+            </div>
+        </section>
+
+        <footer>
+            <p>Generated by Gemini AI System • Objective Analysis Mode</p>
+        </footer>
+    </div>
+
+    <script>
+        // Canvas Logic
+        const canvas = document.getElementById('drawingCanvas');
+        const ctx = canvas.getContext('2d');
+        const container = document.getElementById('canvasContainer');
+        
+        let isDrawing = false;
+        let lastX = 0;
+        let lastY = 0;
+
+        function resizeCanvas() {
+            canvas.width = container.offsetWidth;
+            canvas.height = container.offsetHeight;
+            ctx.strokeStyle = '#000000';
+            ctx.lineJoin = 'round';
+            ctx.lineCap = 'round';
+            ctx.lineWidth = 2;
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        function draw(e) {
+            if (!isDrawing) return;
+            
+            // Get correct coordinates for mouse or touch
+            let clientX, clientY;
+            if(e.type.includes('touch')) {
+                clientX = e.touches[0].clientX;
+                clientY = e.touches[0].clientY;
+            } else {
+                clientX = e.clientX;
+                clientY = e.clientY;
+            }
+
+            const rect = canvas.getBoundingClientRect();
+            const x = clientX - rect.left;
+            const y = clientY - rect.top;
+
+            ctx.beginPath();
+            ctx.moveTo(lastX, lastY);
+            ctx.lineTo(x, y);
+            ctx.stroke();
+            
+            [lastX, lastY] = [x, y];
+        }
+
+        function startDrawing(e) {
+            isDrawing = true;
+            let clientX, clientY;
+            if(e.type.includes('touch')) {
+                clientX = e.touches[0].clientX;
+                clientY = e.touches[0].clientY;
+                // Prevent scrolling when touching canvas
+                e.preventDefault(); 
+            } else {
+                clientX = e.clientX;
+                clientY = e.clientY;
+            }
+
+            const rect = canvas.getBoundingClientRect();
+            [lastX, lastY] = [clientX - rect.left, clientY - rect.top];
+        }
+
+        function stopDrawing() {
+            isDrawing = false;
+        }
+
+        // Mouse Events
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('mouseout', stopDrawing);
+
+        // Touch Events
+        canvas.addEventListener('touchstart', startDrawing, {passive: false});
+        canvas.addEventListener('touchmove', draw, {passive: false});
+        canvas.addEventListener('touchend', stopDrawing);
+
+        // Controls
+        function clearCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        function downloadCanvas() {
+            const link = document.createElement('a');
+            link.download = 'analisis-logic-sketch.png';
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+    </script>
+</body>
+</html>
