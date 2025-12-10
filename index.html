@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roadmap Kesurupan</title>
+    <title>Roadmap: Logika Kesurupan & Mistik</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
 </head>
@@ -11,61 +11,114 @@
 
     <nav class="top-nav">
         <div class="brand">
-            <span class="brand-text">Bedah Logika: <strong>Kesurupan</strong></span>
+            <span class="brand-text">Bedah Logika: <strong>Mistik vs Sains</strong></span>
         </div>
-        <div class="status-badge">Roadmap Mode</div>
+        <div class="status-badge">Full Roadmap</div>
     </nav>
 
     <main class="roadmap-container">
-        
         <div class="diagram-canvas">
             <div class="tree">
                 <ul>
                     <li>
                         <a href="#" class="node-card yellow" onclick="openDrawer('start', event)">
                             <span class="label">START</span>
-                            <span class="title">Fenomena Kesurupan</span>
+                            <span class="title">Fenomena Ganjil</span>
                         </a>
                         <ul>
                             <li>
-                                <a href="#" class="node-card purple" onclick="openDrawer('decision', event)">
-                                    <span class="title">Pendekatan Analisis</span>
+                                <a href="#" class="node-card gray" onclick="openDrawer('mistik_root', event)">
+                                    <span class="title">Logika Mistika</span>
                                 </a>
                                 <ul>
                                     <li>
-                                        <a href="#" class="node-card gray" onclick="openDrawer('mistik', event)">
-                                            <span class="title">Jalur Mistik (Mitos)</span>
+                                        <a href="#" class="node-card gray" onclick="openDrawer('santet', event)">
+                                            <span class="title">Santet/Guna-guna</span>
                                         </a>
                                         <ul>
                                             <li>
-                                                <a href="#" class="node-card gray" onclick="openDrawer('dukun', event)">
-                                                    <span class="title">Output: Dukun</span>
+                                                <a href="#" class="node-card purple" onclick="openDrawer('santet_medis', event)">
+                                                    <span class="label">FAKTA MEDIS</span>
+                                                    <span class="title">Keracunan/Genetik</span>
                                                 </a>
                                             </li>
                                         </ul>
                                     </li>
-                                    
                                     <li>
-                                        <a href="#" class="node-card purple" onclick="openDrawer('sains', event)">
-                                            <span class="title">Jalur Medis (Sains)</span>
+                                        <a href="#" class="node-card gray" onclick="openDrawer('indigo', event)">
+                                            <span class="title">Anak Indigo</span>
                                         </a>
                                         <ul>
                                             <li>
-                                                <a href="#" class="node-card purple" onclick="openDrawer('kimia', event)">
-                                                    <span class="title">Kimia Otak</span>
+                                                <a href="#" class="node-card purple" onclick="openDrawer('savant', event)">
+                                                    <span class="label">FAKTA MEDIS</span>
+                                                    <span class="title">Savant Syndrome</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="node-card gray" onclick="openDrawer('ketindihan', event)">
+                                            <span class="title">Ketindihan</span>
+                                        </a>
+                                        <ul>
+                                            <li>
+                                                <a href="#" class="node-card purple" onclick="openDrawer('sleep_paralysis', event)">
+                                                    <span class="label">MEKANISME</span>
+                                                    <span class="title">Sleep Paralysis</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li>
+                                <a href="#" class="node-card purple" onclick="openDrawer('sains_root', event)">
+                                    <span class="title">Neurosains (Otak)</span>
+                                </a>
+                                <ul>
+                                    <li>
+                                        <a href="#" class="node-card purple" onclick="openDrawer('dtd', event)">
+                                            <span class="title">Kesurupan (DTD)</span>
+                                        </a>
+                                        <ul>
+                                            <li>
+                                                <a href="#" class="node-card purple" onclick="openDrawer('kimia_otak', event)">
+                                                    <span class="title">Banjir Kimia Otak</span>
                                                 </a>
                                                 <ul>
                                                     <li>
-                                                        <a href="#" class="node-card green" onclick="openDrawer('solusi', event)">
-                                                            <div class="icon-check">✓</div>
-                                                            <span class="title">Solusi & Penanganan</span>
+                                                        <a href="#" class="node-card purple" onclick="openDrawer('hyper_recall', event)">
+                                                            <span class="title">Hyper-Recalling</span>
                                                         </a>
                                                     </li>
                                                 </ul>
                                             </li>
                                             <li>
-                                                <a href="#" class="node-card purple" onclick="openDrawer('memori', event)">
-                                                    <span class="title">Database Memori</span>
+                                                <a href="#" class="node-card purple" onclick="openDrawer('gains', event)">
+                                                    <span class="title">Primary & Secondary Gain</span>
+                                                </a>
+                                                <ul>
+                                                    <li>
+                                                        <a href="#" class="node-card green" onclick="openDrawer('solusi', event)">
+                                                            <div class="icon-check">✓</div>
+                                                            <span class="title">Solusi: Extinction</span>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    
+                                    <li>
+                                        <a href="#" class="node-card purple" onclick="openDrawer('halusinasi', event)">
+                                            <span class="title">Penampakan Hantu</span>
+                                        </a>
+                                        <ul>
+                                            <li>
+                                                <a href="#" class="node-card purple" onclick="openDrawer('evolusi', event)">
+                                                    <span class="title">Evolusi & Survival</span>
                                                 </a>
                                             </li>
                                         </ul>
@@ -82,37 +135,33 @@
             <button class="close-btn" onclick="closeDrawer()">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
             </button>
-            
             <div class="drawer-header">
                 <span class="topic-badge" id="panelCategory">Topic</span>
                 <h2 id="panelTitle">Judul Materi</h2>
             </div>
-            
             <div class="drawer-content">
                 <p id="panelText" class="main-desc">Isi materi...</p>
-                
                 <div class="resources">
                     <h3>Deep Dive</h3>
-                    <a href="#" class="res-link">
+                    <div class="res-item">
                         <span class="res-icon">💡</span>
                         <div class="res-info">
-                            <strong>Analogi</strong>
+                            <strong>Analogi / Fakta</strong>
                             <span id="panelAnalogy">-</span>
                         </div>
-                    </a>
-                    <a href="#" class="res-link">
-                        <span class="res-icon">📂</span>
+                    </div>
+                    <div class="res-item">
+                        <span class="res-icon">🧠</span>
                         <div class="res-info">
-                            <strong>Studi Kasus</strong>
+                            <strong>Mekanisme / Studi Kasus</strong>
                             <span id="panelCase">-</span>
                         </div>
-                    </a>
+                    </div>
                 </div>
             </div>
         </aside>
 
         <div class="overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
-
     </main>
 
     <script src="script.js"></script>
