@@ -1,0 +1,131 @@
+:root {
+    --primary: #4A90E2;      /* Biru Medis */
+    --accent: #50E3C2;       /* Hijau Flat Modern */
+    --text-dark: #2C3E50;
+    --text-light: #7F8C8D;
+    --bg: #F0F4F8;
+    --card-bg: #FFFFFF;
+    --shadow: 0 10px 30px rgba(0,0,0,0.08);
+    --radius: 20px;
+}
+
+body {
+    font-family: 'Segoe UI', Roboto, Helvetica, sans-serif;
+    background-color: var(--bg);
+    color: var(--text-dark);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    overflow: hidden;
+}
+
+/* Container Utama */
+.container {
+    width: 90%;
+    max-width: 500px;
+    perspective: 1000px;
+}
+
+/* Kartu */
+.card-wrapper {
+    position: relative;
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 40px 30px;
+    text-align: center;
+    transition: transform 0.5s ease, opacity 0.5s ease;
+    min-height: 450px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Header Visual */
+.icon-box {
+    width: 80px;
+    height: 80px;
+    background: #EBF5FF;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    font-size: 40px;
+}
+
+h2 { margin: 0 0 10px; color: var(--text-dark); font-size: 24px; }
+h4 { margin: 0 0 20px; color: var(--primary); font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
+
+/* Konten Teks */
+.content p {
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--text-light);
+    margin-bottom: 20px;
+}
+
+.analogy-box {
+    background: #FAFAFA;
+    border-left: 4px solid var(--accent);
+    padding: 15px;
+    text-align: left;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.analogy-title {
+    font-weight: bold;
+    font-size: 12px;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 5px;
+}
+
+/* Navigasi Dots */
+.dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    background: #DCE1E6;
+    border-radius: 50%;
+    transition: 0.3s;
+}
+
+.dot.active { background: var(--primary); transform: scale(1.2); }
+
+/* Tombol */
+.btn-group {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+button {
+    border: none;
+    padding: 12px 24px;
+    border-radius: 50px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+    font-size: 14px;
+}
+
+.btn-next { background: var(--primary); color: white; flex: 2; }
+.btn-next:hover { background: #357ABD; box-shadow: 0 5px 15px rgba(74, 144, 226, 0.3); }
+
+.btn-prev { background: white; color: var(--text-light); border: 1px solid #DCE1E6; flex: 1; }
+.btn-prev:hover { background: #F8F9FA; }
+.btn-prev:disabled { opacity: 0.3; cursor: not-allowed; }
+
+/* Animations */
+.fade-in { animation: fadeIn 0.5s forwards; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
